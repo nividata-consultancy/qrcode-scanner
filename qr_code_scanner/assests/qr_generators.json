@@ -1,0 +1,30 @@
+[
+    {
+        "assest_path": "assests/icons/call.svg",
+        "label": "Phone Number"
+    },
+    {
+        "assest_path": "assests/icons/user.svg",
+        "label": "Contacts"
+    },
+    {
+        "assest_path": "assests/icons/internet.svg",
+        "label": "Website URL"
+    },
+    {
+        "assest_path": "assests/icons/sms.svg",
+        "label": "Message"
+    },
+    {
+        "assest_path": "assests/icons/wifi.svg",
+        "label": "Wifi"
+    },
+    {
+        "assest_path": "assests/icons/location.svg",
+        "label": "Location"
+    },
+    {
+        "assest_path": "assests/icons/call.svg",
+        "label": "Email"
+    }
+]
