@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:qr_code_scanner/models/QRGenerator.dart';
 import 'package:qr_code_scanner/res/strings.dart';
 
 class QRCodeGenerator extends StatelessWidget {
@@ -12,7 +11,7 @@ class QRCodeGenerator extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          Strings.lbl_generate,
+          Strings.lbl_qr_code,
           style: TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold),
         ),
         elevation: 0.0,
@@ -26,6 +25,7 @@ class QRCodeGenerator extends StatelessWidget {
             var qrItems = json.decode(snapshot.data.toString());
 
             return GridView.builder(
+              padding: EdgeInsets.only(bottom: 40.0),
               itemBuilder: (BuildContext context, int index) {
                 return gridView(qrItems, index);
               },
