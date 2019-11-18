@@ -10,6 +10,7 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -18,7 +19,7 @@ class _MyAppState extends State<MyApp> {
   String barcode = "";
 
   @override
-  void initState() {
+  initState() {
     super.initState();
   }
 
@@ -27,14 +28,14 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme:
+          ThemeData(primarySwatch: Colors.blue, backgroundColor: Colors.white),
       home: Scaffold(
+        extendBody: true,
         body: QRCodeGenerator(),
         floatingActionButton: FloatingActionButton(
           onPressed: scan,
-          backgroundColor: Colors.green,
+          backgroundColor: Color.fromRGBO(255, 87, 34, 1),
           child: SvgPicture.asset(
             'assests/icons/scan.svg',
             color: Colors.white,
@@ -42,35 +43,40 @@ class _MyAppState extends State<MyApp> {
             width: 26,
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          clipBehavior: Clip.antiAlias,
-          notchMargin: 6.0,
-          child: BottomNavigationBar(
-              selectedItemColor: Colors.green,
-              type: BottomNavigationBarType.fixed,
-              currentIndex: 1,
-              selectedLabelStyle: TextStyle(
-                  color: Colors.green,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12.0),
-              unselectedItemColor: Colors.black87,
-              unselectedLabelStyle:
-                  TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
-              items: [
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.history,
-                      size: 22.0,
-                    ),
-                    title: Text(Strings.lbl_history)),
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      FontAwesomeIcons.qrcode,
-                      size: 18.0,
-                    ),
-                    title: Text(Strings.lbl_generate))
-              ]),
+        bottomNavigationBar: Container(
+          // color: Colors.green,
+          child: BottomAppBar(
+            shape: CircularNotchedRectangle(),
+            clipBehavior: Clip.hardEdge,
+            notchMargin: 4.0,
+            child: BottomNavigationBar(
+                selectedItemColor: Colors.deepOrange,
+                type: BottomNavigationBarType.fixed,
+                currentIndex: 0,
+                elevation: 100.0,
+                backgroundColor: Colors.white70,
+                selectedLabelStyle: TextStyle(
+                    color: Colors.greenAccent,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12.0),
+                unselectedItemColor: Colors.black87,
+                unselectedLabelStyle:
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
+                items: [
+                  BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.history,
+                        size: 22.0,
+                      ),
+                      title: Text(Strings.lbl_history)),
+                  BottomNavigationBarItem(
+                      icon: Icon(
+                        FontAwesomeIcons.qrcode,
+                        size: 18.0,
+                      ),
+                      title: Text(Strings.lbl_generate))
+                ]),
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
