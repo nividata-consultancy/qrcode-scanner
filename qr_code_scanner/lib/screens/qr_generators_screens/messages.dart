@@ -10,12 +10,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qr_code_scanner/res/strings.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class PhoneNumberQR extends StatefulWidget {
+class MessageQR extends StatefulWidget {
   @override
-  _PhoneNumberQRState createState() => _PhoneNumberQRState();
+  _MessageQRState createState() => _MessageQRState();
 }
 
-class _PhoneNumberQRState extends State<PhoneNumberQR> {
+class _MessageQRState extends State<MessageQR> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +31,7 @@ class _PhoneNumberQRState extends State<PhoneNumberQR> {
               size: 18.0,
             ),
             Text(
-              " ${Strings.lbl_phone_number}",
+              " ${Strings.lbl_email}",
               style: TextStyle(fontFamily: 'Righteous', color: Colors.black),
             )
           ],
@@ -49,7 +49,8 @@ class PhoneNumberScreen extends StatefulWidget {
 
 class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
   final _formKey = GlobalKey<FormState>();
-  final textEditingController = TextEditingController();
+  final txtToController = TextEditingController();
+  final txtMessageController = TextEditingController();
   String _dataString = "Hello from this QR";
   String _inputErrorText;
   var bodyHeight;
@@ -68,16 +69,31 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                 TextFormField(
                   keyboardType: TextInputType.phone,
                   maxLines: 1,
-                  maxLength: 15,
-                  controller: textEditingController,
+                  controller: txtToController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: Strings.lbl_phone,
+                    labelText: Strings.lbl_to,
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
                     if (value.isEmpty)
-                      return 'Phone number is required';
+                      return 'Receiver number is required';
+                    else
+                      return null;
+                  },
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: txtMessageController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: Strings.lbl_message,
+                    errorText: _inputErrorText,
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty)
+                      return 'Message text is required';
                     else
                       return null;
                   },
@@ -90,7 +106,8 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                         borderRadius: BorderRadius.circular(6.0)),
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        _dataString = ("tel:${textEditingController.text}");
+                        _dataString =
+                            ("SMSTO: ${txtToController.text}: ${txtMessageController.text}");
                         _inputErrorText = null;
                         phoneInputBS(_dataString, context);
                       }

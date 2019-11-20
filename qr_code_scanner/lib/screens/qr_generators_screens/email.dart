@@ -10,12 +10,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qr_code_scanner/res/strings.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class PhoneNumberQR extends StatefulWidget {
+class EmailQR extends StatefulWidget {
   @override
-  _PhoneNumberQRState createState() => _PhoneNumberQRState();
+  _EmailQRState createState() => _EmailQRState();
 }
 
-class _PhoneNumberQRState extends State<PhoneNumberQR> {
+class _EmailQRState extends State<EmailQR> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,25 +31,28 @@ class _PhoneNumberQRState extends State<PhoneNumberQR> {
               size: 18.0,
             ),
             Text(
-              " ${Strings.lbl_phone_number}",
+              " ${Strings.lbl_email}",
               style: TextStyle(fontFamily: 'Righteous', color: Colors.black),
             )
           ],
         ),
       ),
-      body: PhoneNumberScreen(),
+      body: EmailScreen(),
     );
   }
 }
 
-class PhoneNumberScreen extends StatefulWidget {
+class EmailScreen extends StatefulWidget {
   @override
-  _PhoneNumberScreenState createState() => _PhoneNumberScreenState();
+  _EmailScreenState createState() => _EmailScreenState();
 }
 
-class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
+class _EmailScreenState extends State<EmailScreen> {
   final _formKey = GlobalKey<FormState>();
-  final textEditingController = TextEditingController();
+  final txtEmailController = TextEditingController();
+  final txtSubjectController = TextEditingController();
+  final txtMailContentController = TextEditingController();
+
   String _dataString = "Hello from this QR";
   String _inputErrorText;
   var bodyHeight;
@@ -66,18 +69,49 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
             child: Column(
               children: <Widget>[
                 TextFormField(
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.emailAddress,
                   maxLines: 1,
-                  maxLength: 15,
-                  controller: textEditingController,
+                  controller: txtEmailController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: Strings.lbl_phone,
+                    labelText: Strings.lbl_email,
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
                     if (value.isEmpty)
-                      return 'Phone number is required';
+                      return 'Email address is required';
+                    else
+                      return null;
+                  },
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  maxLines: 1,
+                  controller: txtSubjectController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: Strings.lbl_subject,
+                    errorText: _inputErrorText,
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty)
+                      return 'Subject is required';
+                    else
+                      return null;
+                  },
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: txtMailContentController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: Strings.lbl_body,
+                    errorText: _inputErrorText,
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty)
+                      return 'Body content is required';
                     else
                       return null;
                   },
@@ -90,7 +124,8 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                         borderRadius: BorderRadius.circular(6.0)),
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        _dataString = ("tel:${textEditingController.text}");
+                        _dataString =
+                            ("mailto:${txtEmailController.text}?subject=${txtSubjectController.text}&body=${txtMailContentController.text}");
                         _inputErrorText = null;
                         phoneInputBS(_dataString, context);
                       }
@@ -134,7 +169,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
         context: context,
         builder: (BuildContext bc) {
           return Container(
-              height: 450.0,
+              height: MediaQuery.of(context).size.height,
               margin: EdgeInsets.all(10),
               color:
                   Colors.transparent, //could change this to Color(0xFF737373),

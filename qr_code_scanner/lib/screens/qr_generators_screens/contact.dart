@@ -10,12 +10,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qr_code_scanner/res/strings.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class PhoneNumberQR extends StatefulWidget {
+class ContactQR extends StatefulWidget {
   @override
-  _PhoneNumberQRState createState() => _PhoneNumberQRState();
+  _ContactQRState createState() => _ContactQRState();
 }
 
-class _PhoneNumberQRState extends State<PhoneNumberQR> {
+class _ContactQRState extends State<ContactQR> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +31,7 @@ class _PhoneNumberQRState extends State<PhoneNumberQR> {
               size: 18.0,
             ),
             Text(
-              " ${Strings.lbl_phone_number}",
+              " ${Strings.lbl_contact}",
               style: TextStyle(fontFamily: 'Righteous', color: Colors.black),
             )
           ],
@@ -49,38 +49,82 @@ class PhoneNumberScreen extends StatefulWidget {
 
 class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
   final _formKey = GlobalKey<FormState>();
-  final textEditingController = TextEditingController();
+  final txtFirstNameController = TextEditingController();
+  final txtLastNameController = TextEditingController();
+  final txtOrgController = TextEditingController();
+  final txtEmailController = TextEditingController();
+
   String _dataString = "Hello from this QR";
   String _inputErrorText;
   var bodyHeight;
+
   GlobalKey globalKey = new GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        Text(
+          Strings.lbl_phone,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         Form(
           key: _formKey,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(40.0, 50.0, 40.0, 10.0),
+            padding: const EdgeInsets.fromLTRB(40.0, 40.0, 40.0, 10.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 TextFormField(
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.text,
                   maxLines: 1,
-                  maxLength: 15,
-                  controller: textEditingController,
+                  controller: txtFirstNameController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: Strings.lbl_phone,
+                    labelText: "First Name",
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
                     if (value.isEmpty)
-                      return 'Phone number is required';
+                      return 'First name is required';
                     else
                       return null;
                   },
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  maxLines: 1,
+                  controller: txtLastNameController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Last Name",
+                    errorText: _inputErrorText,
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty)
+                      return 'Last name is required';
+                    else
+                      return null;
+                  },
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  maxLines: 1,
+                  controller: txtOrgController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Organization",
+                  ),
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  maxLines: 1,
+                  controller: txtEmailController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Email",
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -90,9 +134,9 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                         borderRadius: BorderRadius.circular(6.0)),
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        _dataString = ("tel:${textEditingController.text}");
+                        _dataString = txtFirstNameController.text;
                         _inputErrorText = null;
-                        phoneInputBS(_dataString, context);
+                        phoneInputBS(txtEmailController.text, context);
                       }
                     },
                     child: Text('Generate QR',
@@ -127,6 +171,8 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
   }
 
   void phoneInputBS(_dataString, context) {
+    GlobalKey globalKey = new GlobalKey();
+
     bodyHeight = MediaQuery.of(context).size.height -
         MediaQuery.of(context).viewInsets.bottom;
     showModalBottomSheet(

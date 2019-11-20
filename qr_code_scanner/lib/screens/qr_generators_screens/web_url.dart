@@ -10,12 +10,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qr_code_scanner/res/strings.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class PhoneNumberQR extends StatefulWidget {
+class WebUrlQR extends StatefulWidget {
   @override
-  _PhoneNumberQRState createState() => _PhoneNumberQRState();
+  _WebUrlQRState createState() => _WebUrlQRState();
 }
 
-class _PhoneNumberQRState extends State<PhoneNumberQR> {
+class _WebUrlQRState extends State<WebUrlQR> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +31,7 @@ class _PhoneNumberQRState extends State<PhoneNumberQR> {
               size: 18.0,
             ),
             Text(
-              " ${Strings.lbl_phone_number}",
+              " ${Strings.lbl_web_url}",
               style: TextStyle(fontFamily: 'Righteous', color: Colors.black),
             )
           ],
@@ -66,18 +66,17 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
             child: Column(
               children: <Widget>[
                 TextFormField(
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.url,
                   maxLines: 1,
-                  maxLength: 15,
                   controller: textEditingController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: Strings.lbl_phone,
+                    labelText: Strings.lbl_web_url,
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
                     if (value.isEmpty)
-                      return 'Phone number is required';
+                      return 'Web url is required';
                     else
                       return null;
                   },
@@ -90,9 +89,9 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                         borderRadius: BorderRadius.circular(6.0)),
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        _dataString = ("tel:${textEditingController.text}");
+                        _dataString = textEditingController.text;
                         _inputErrorText = null;
-                        phoneInputBS(_dataString, context);
+                        phoneInputBS(textEditingController.text, context);
                       }
                     },
                     child: Text('Generate QR',

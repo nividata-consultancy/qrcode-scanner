@@ -3,7 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:qr_code_scanner/screens/qr_generators_screens/contact.dart';
+import 'package:qr_code_scanner/screens/qr_generators_screens/email.dart';
+import 'package:qr_code_scanner/screens/qr_generators_screens/messages.dart';
 import 'package:qr_code_scanner/screens/qr_generators_screens/phone_number.dart';
+import 'package:qr_code_scanner/screens/qr_generators_screens/web_url.dart';
 
 class QRCodeGenerator extends StatefulWidget {
   @override
@@ -85,7 +89,7 @@ class _QRCodeGeneratorState extends State<QRCodeGenerator> {
 
   Widget gridView(context, qrItems, int number) {
     return Card(
-      // color: Color.fromRGBO(105, 240, 174, 1),
+      color: Color.fromRGBO(105, 240, 174, 1),
       margin: EdgeInsets.all(7.0),
       elevation: 0.0,
       shape: RoundedRectangleBorder(
@@ -106,7 +110,7 @@ class _QRCodeGeneratorState extends State<QRCodeGenerator> {
                 qrItems[number]['assest_path'],
                 height: 60.0,
                 width: 60.0,
-                // color: Colors.black87,
+                color: Colors.black87,
               ),
               Text(
                 qrItems[number]['label'],
@@ -118,52 +122,28 @@ class _QRCodeGeneratorState extends State<QRCodeGenerator> {
             ],
           ),
         ),
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => PhoneNumberQR()),
-        ),
+        onTap: () => {
+          if (number == 0)
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PhoneNumberQR()))
+          else if (number == 1)
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => ContactQR()))
+          else if (number == 2)
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => WebUrlQR()))
+          else if (number == 3)
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MessageQR()))
+          else if (number == 4)
+            {}
+          else if (number == 5)
+            {}
+          else
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => EmailQR()))
+        },
       ),
     );
   }
-
-  // void phoneInputBS(context) {
-  //   showModalBottomSheet(
-  //       backgroundColor: Colors.transparent,
-  //       context: context,
-  //       builder: (BuildContext bc) {
-  //         return DraggableScrollableSheet(
-  //             initialChildSize: 0.5,
-  //             maxChildSize: 1,
-  //             minChildSize: 0.25,
-  //             builder:
-  //                 (BuildContext context, ScrollController scrollController) {
-  //               return new Container(
-  //                   height: 450.0,
-  //                   margin: EdgeInsets.all(10),
-  //                   color: Colors
-  //                       .transparent, //could change this to Color(0xFF737373),
-  //                   //so you don't have to change MaterialApp canvasColor
-  //                   child: new Container(
-  //                       decoration: new BoxDecoration(
-  //                           color: Colors.white,
-  //                           borderRadius:
-  //                               new BorderRadius.all(Radius.circular(10.0))),
-  //                       child: new Center(
-  //                           child: new Column(
-  //                               mainAxisSize: MainAxisSize.max,
-  //                               crossAxisAlignment: CrossAxisAlignment.stretch,
-  //                               children: <Widget>[
-  //                             Expanded(
-  //                               child: TextField(
-  //                                 controller: _textController,
-  //                                 decoration: InputDecoration(
-  //                                   hintText: "Enter a custom message",
-  //                                   errorText: _inputErrorText,
-  //                                 ),
-  //                               ),
-  //                             ),
-  //                           ]))));
-  //             });
-  //       });
-  // }
 }
