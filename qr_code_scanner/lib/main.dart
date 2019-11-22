@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
             child: BottomNavigationBar(
                 selectedItemColor: Colors.deepOrange,
                 type: BottomNavigationBarType.fixed,
-                currentIndex: 0,
+                currentIndex: 1,
                 elevation: 100.0,
                 backgroundColor: Colors.white70,
                 selectedLabelStyle: TextStyle(

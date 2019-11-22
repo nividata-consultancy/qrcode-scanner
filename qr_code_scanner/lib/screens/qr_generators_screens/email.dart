@@ -51,7 +51,7 @@ class _EmailScreenState extends State<EmailScreen> {
   final _formKey = GlobalKey<FormState>();
   final txtEmailController = TextEditingController();
   final txtSubjectController = TextEditingController();
-  final txtMailContentController = TextEditingController();
+  final txtBodyController = TextEditingController();
 
   String _dataString = "Hello from this QR";
   String _inputErrorText;
@@ -60,19 +60,24 @@ class _EmailScreenState extends State<EmailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Form(
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: new Form(
           key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(40.0, 50.0, 40.0, 10.0),
-            child: Column(
-              children: <Widget>[
-                TextFormField(
+          autovalidate: false,
+          child: new ListView(
+            padding: const EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 16.0),
+            shrinkWrap: true,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   maxLines: 1,
                   controller: txtEmailController,
                   decoration: InputDecoration(
+                    hintText: Strings.lbl_email_hint,
                     border: OutlineInputBorder(),
                     labelText: Strings.lbl_email,
                     errorText: _inputErrorText,
@@ -84,7 +89,10 @@ class _EmailScreenState extends State<EmailScreen> {
                       return null;
                   },
                 ),
-                TextFormField(
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
                   keyboardType: TextInputType.text,
                   maxLines: 1,
                   controller: txtSubjectController,
@@ -95,50 +103,57 @@ class _EmailScreenState extends State<EmailScreen> {
                   ),
                   validator: (value) {
                     if (value.isEmpty)
-                      return 'Subject is required';
+                      return 'Mail subject is required';
                     else
                       return null;
                   },
                 ),
-                TextFormField(
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  controller: txtMailContentController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: Strings.lbl_body,
-                    errorText: _inputErrorText,
-                  ),
-                  validator: (value) {
-                    if (value.isEmpty)
-                      return 'Body content is required';
-                    else
-                      return null;
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: MaterialButton(
-                    color: Colors.deepOrange,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0)),
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        _dataString =
-                            ("mailto:${txtEmailController.text}?subject=${txtSubjectController.text}&body=${txtMailContentController.text}");
-                        _inputErrorText = null;
-                        phoneInputBS(_dataString, context);
-                      }
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 100.0,
+                  child: TextFormField(
+                    expands: true,
+                    textDirection: TextDirection.ltr,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    controller: txtBodyController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: Strings.lbl_body,
+                      errorText: _inputErrorText,
+                    ),
+                    validator: (value) {
+                      if (value.isEmpty)
+                        return 'Mail body is required';
+                      else
+                        return null;
                     },
-                    child: Text('Generate QR',
-                        style: TextStyle(color: Colors.white)),
                   ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: MaterialButton(
+                  color: Colors.deepOrange,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0)),
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      _dataString =
+                          ("mailto:${txtEmailController.text}?subject=${txtSubjectController.text}&body=${txtBodyController.text}");
+                      _inputErrorText = null;
+                      phoneInputBS(_dataString, context);
+                    }
+                  },
+                  child: Text('Generate QR',
+                      style: TextStyle(color: Colors.white)),
+                ),
+              ),
+            ],
+          )),
     );
   }
 
@@ -170,7 +185,7 @@ class _EmailScreenState extends State<EmailScreen> {
         builder: (BuildContext bc) {
           return Container(
               height: MediaQuery.of(context).size.height,
-              margin: EdgeInsets.all(10),
+              margin: EdgeInsets.all(10.0),
               color:
                   Colors.transparent, //could change this to Color(0xFF737373),
               //so you don't have to change MaterialApp canvasColor
@@ -185,6 +200,8 @@ class _EmailScreenState extends State<EmailScreen> {
                       child: RepaintBoundary(
                         key: globalKey,
                         child: QrImage(
+                          gapless: false,
+                          version: 20,
                           data: _dataString,
                           size: 0.38 * bodyHeight,
                           onError: (ex) {

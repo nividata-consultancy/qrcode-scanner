@@ -20,8 +20,8 @@ class _ContactQRState extends State<ContactQR> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white10,
-        elevation: 0.0,
+        backgroundColor: Colors.white,
+        elevation: 1.0,
         iconTheme: IconThemeData(color: Colors.black),
         title: Row(
           children: <Widget>[
@@ -49,10 +49,13 @@ class PhoneNumberScreen extends StatefulWidget {
 
 class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
   final _formKey = GlobalKey<FormState>();
-  final txtFirstNameController = TextEditingController();
-  final txtLastNameController = TextEditingController();
-  final txtOrgController = TextEditingController();
+  final txtNameController = TextEditingController();
+  final txtPhoneNumberController = TextEditingController();
   final txtEmailController = TextEditingController();
+  final txtCompanyNameController = TextEditingController();
+  final txtAddressController = TextEditingController();
+  final txtWebSiteController = TextEditingController();
+  final txtNickNameController = TextEditingController();
 
   String _dataString = "Hello from this QR";
   String _inputErrorText;
@@ -62,92 +65,150 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Text(
-          Strings.lbl_phone,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(40.0, 40.0, 40.0, 10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  maxLines: 1,
-                  controller: txtFirstNameController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "First Name",
-                    errorText: _inputErrorText,
-                  ),
-                  validator: (value) {
-                    if (value.isEmpty)
-                      return 'First name is required';
-                    else
-                      return null;
-                  },
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: new Form(
+        key: _formKey,
+        autovalidate: false,
+        child: new ListView(
+          padding: const EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 16.0),
+          shrinkWrap: true,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                keyboardType: TextInputType.text,
+                maxLines: 1,
+                controller: txtNameController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Name",
+                  errorText: _inputErrorText,
                 ),
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  maxLines: 1,
-                  controller: txtLastNameController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Last Name",
-                    errorText: _inputErrorText,
-                  ),
-                  validator: (value) {
-                    if (value.isEmpty)
-                      return 'Last name is required';
-                    else
-                      return null;
-                  },
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  maxLines: 1,
-                  controller: txtOrgController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Organization",
-                  ),
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  maxLines: 1,
-                  controller: txtEmailController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Email",
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: MaterialButton(
-                    color: Colors.deepOrange,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0)),
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        _dataString = txtFirstNameController.text;
-                        _inputErrorText = null;
-                        phoneInputBS(txtEmailController.text, context);
-                      }
-                    },
-                    child: Text('Generate QR',
-                        style: TextStyle(color: Colors.white)),
-                  ),
-                )
-              ],
+                validator: (value) {
+                  if (value.isEmpty)
+                    return 'Name is required';
+                  else
+                    return null;
+                },
+              ),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                keyboardType: TextInputType.text,
+                maxLines: 1,
+                controller: txtNickNameController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Nick Name",
+                  errorText: _inputErrorText,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: 100.0,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  expands: true,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: txtAddressController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: "Address",
+                  ),
+                  validator: (value) {
+                    if (value.isEmpty)
+                      return 'Address is required';
+                    else
+                      return null;
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                keyboardType: TextInputType.phone,
+                maxLines: 1,
+                controller: txtPhoneNumberController,
+                decoration: InputDecoration(
+                  hintText: Strings.lbl_phone,
+                  border: OutlineInputBorder(),
+                  labelText: "Phone Number",
+                  errorText: _inputErrorText,
+                ),
+                validator: (value) {
+                  if (value.isEmpty)
+                    return 'Phone number is required';
+                  else
+                    return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                keyboardType: TextInputType.text,
+                maxLines: 1,
+                controller: txtCompanyNameController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Organization",
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                maxLines: 1,
+                controller: txtEmailController,
+                decoration: InputDecoration(
+                  hintText: Strings.lbl_email_hint,
+                  border: OutlineInputBorder(),
+                  labelText: "Email",
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                keyboardType: TextInputType.url,
+                maxLines: 1,
+                controller: txtWebSiteController,
+                decoration: InputDecoration(
+                  hintText: Strings.lbl_web_url_hint,
+                  border: OutlineInputBorder(),
+                  labelText: "Website",
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: MaterialButton(
+                color: Colors.deepOrange,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0)),
+                onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    _dataString =
+                        ("MECARD:N:${txtNameController.text};TEL:${txtPhoneNumberController.text};ADR:${txtAddressController};EMAIL:${txtEmailController.text};URL:${txtWebSiteController.text};NICKNAME:${txtNickNameController.text};");
+                    _inputErrorText = null;
+                    phoneInputBS(_dataString, context);
+                  }
+                },
+                child:
+                    Text('Generate QR', style: TextStyle(color: Colors.white)),
+              ),
+            )
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -196,6 +257,8 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                       child: RepaintBoundary(
                         key: globalKey,
                         child: QrImage(
+                          version: 17,
+                          gapless: false,
                           data: _dataString,
                           size: 0.38 * bodyHeight,
                           onError: (ex) {

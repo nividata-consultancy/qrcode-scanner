@@ -5,23 +5,19 @@
     },
     {
         "assest_path": "assests/icons/user.svg",
-        "label": "Contacts"
+        "label": "Personal VCard"
     },
     {
         "assest_path": "assests/icons/internet.svg",
-        "label": "Website URL"
+        "label": "Web URL"
     },
     {
         "assest_path": "assests/icons/sms.svg",
-        "label": "Message"
+        "label": "Text Message"
     },
     {
         "assest_path": "assests/icons/wifi.svg",
         "label": "Wifi"
-    },
-    {
-        "assest_path": "assests/icons/location.svg",
-        "label": "Location"
     },
     {
         "assest_path": "assests/icons/call.svg",

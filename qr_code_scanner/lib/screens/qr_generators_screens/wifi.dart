@@ -10,12 +10,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qr_code_scanner/res/strings.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class MessageQR extends StatefulWidget {
+class WifiQR extends StatefulWidget {
   @override
-  _MessageQRState createState() => _MessageQRState();
+  _WifiQRState createState() => _WifiQRState();
 }
 
-class _MessageQRState extends State<MessageQR> {
+class _WifiQRState extends State<WifiQR> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,98 +31,36 @@ class _MessageQRState extends State<MessageQR> {
               size: 18.0,
             ),
             Text(
-              " ${Strings.lbl_message}",
+              " ${Strings.lbl_wifi}",
               style: TextStyle(fontFamily: 'Righteous', color: Colors.black),
             )
           ],
         ),
       ),
-      body: PhoneNumberScreen(),
+      body: WifiScreen(),
     );
   }
 }
 
-class PhoneNumberScreen extends StatefulWidget {
+class WifiScreen extends StatefulWidget {
   @override
-  _PhoneNumberScreenState createState() => _PhoneNumberScreenState();
+  _WifiScreenState createState() => _WifiScreenState();
 }
 
-class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
+class _WifiScreenState extends State<WifiScreen> {
   final _formKey = GlobalKey<FormState>();
-  final txtToController = TextEditingController();
-  final txtMessageController = TextEditingController();
+
+  final txtSSIDController = TextEditingController();
+  final txtPASSWORDContentController = TextEditingController();
+
   String _dataString = "Hello from this QR";
   String _inputErrorText;
   var bodyHeight;
   GlobalKey globalKey = new GlobalKey();
+  String dropdownValue = 'None';
 
   @override
   Widget build(BuildContext context) {
-    // return Column(
-    //   children: <Widget>[
-    //     Form(
-    //       key: _formKey,
-    //       child: Padding(
-    //         padding: const EdgeInsets.fromLTRB(40.0, 50.0, 40.0, 10.0),
-    //         child: Column(
-    //           children: <Widget>[
-    //             TextFormField(
-    //               keyboardType: TextInputType.phone,
-    //               maxLines: 1,
-    //               controller: txtToController,
-    //               decoration: InputDecoration(
-    //                 border: OutlineInputBorder(),
-    //                 labelText: Strings.lbl_to,
-    //                 errorText: _inputErrorText,
-    //               ),
-    //               validator: (value) {
-    //                 if (value.isEmpty)
-    //                   return 'Receiver number is required';
-    //                 else
-    //                   return null;
-    //               },
-    //             ),
-    //             TextFormField(
-    //               keyboardType: TextInputType.multiline,
-    //               maxLines: null,
-    //               controller: txtMessageController,
-    //               decoration: InputDecoration(
-    //                 border: OutlineInputBorder(),
-    //                 labelText: Strings.lbl_message,
-    //                 errorText: _inputErrorText,
-    //               ),
-    //               validator: (value) {
-    //                 if (value.isEmpty)
-    //                   return 'Message text is required';
-    //                 else
-    //                   return null;
-    //               },
-    //             ),
-    //             Padding(
-    //               padding: const EdgeInsets.symmetric(vertical: 16.0),
-    //               child: MaterialButton(
-    //                 color: Colors.deepOrange,
-    //                 shape: RoundedRectangleBorder(
-    //                     borderRadius: BorderRadius.circular(6.0)),
-    //                 onPressed: () {
-    //                   if (_formKey.currentState.validate()) {
-    //                     _dataString =
-    //                         ("SMSTO: ${txtToController.text}: ${txtMessageController.text}");
-    //                     _inputErrorText = null;
-    //                     phoneInputBS(_dataString, context);
-    //                   }
-    //                 },
-    //                 child: Text('Generate QR',
-    //                     style: TextStyle(color: Colors.white)),
-    //               ),
-    //             )
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   ],
-    // );
-
     return SafeArea(
       top: false,
       bottom: false,
@@ -134,20 +72,62 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
             shrinkWrap: true,
             children: <Widget>[
               Padding(
+                padding: const EdgeInsets.only(left: 9.0),
+                child: Text(Strings.lbl_authentication),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                  decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              width: 1.0,
+                              style: BorderStyle.solid,
+                              color: Colors.grey),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(4.0)))),
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: dropdownValue,
+                    icon: Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: TextStyle(color: Colors.black),
+                    underline: Container(
+                      height: 0.0,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        dropdownValue = newValue;
+                      });
+                    },
+                    items: <String>['None', 'WEP', 'WPA/WPA2']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+              Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.text,
                   maxLines: 1,
-                  controller: txtToController,
+                  controller: txtSSIDController,
                   decoration: InputDecoration(
-                    hintText: Strings.lbl_phone,
                     border: OutlineInputBorder(),
-                    labelText: Strings.lbl_to,
+                    hintText: Strings.lbl_network_name,
+                    labelText: Strings.lbl_ssid,
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
                     if (value.isEmpty)
-                      return 'Receiver number is required';
+                      return 'SSID is required';
                     else
                       return null;
                   },
@@ -155,27 +135,22 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 200.0,
-                  child: TextFormField(
-                    expands: true,
-                    textDirection: TextDirection.ltr,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    controller: txtMessageController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: Strings.lbl_message,
-                      errorText: _inputErrorText,
-                    ),
-                    validator: (value) {
-                      if (value.isEmpty)
-                        return 'Message text is required';
-                      else
-                        return null;
-                    },
+                child: TextFormField(
+                  obscureText: true,
+                  keyboardType: TextInputType.visiblePassword,
+                  maxLines: 1,
+                  controller: txtPASSWORDContentController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: Strings.lbl_password,
+                    errorText: _inputErrorText,
                   ),
+                  validator: (value) {
+                    if (value.isEmpty)
+                      return 'Password is required';
+                    else
+                      return null;
+                  },
                 ),
               ),
               Padding(
@@ -187,7 +162,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _dataString =
-                          ("SMSTO: ${txtToController.text}: ${txtMessageController.text}");
+                          ("WIFI:T:$dropdownValue;S:${txtSSIDController.text};P:${txtPASSWORDContentController.text};;");
                       _inputErrorText = null;
                       phoneInputBS(_dataString, context);
                     }
@@ -228,7 +203,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
         context: context,
         builder: (BuildContext bc) {
           return Container(
-              height: 450.0,
+              height: MediaQuery.of(context).size.height,
               margin: EdgeInsets.all(10),
               color:
                   Colors.transparent, //could change this to Color(0xFF737373),
@@ -244,7 +219,6 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                       child: RepaintBoundary(
                         key: globalKey,
                         child: QrImage(
-                          version: 14,
                           data: _dataString,
                           size: 0.38 * bodyHeight,
                           onError: (ex) {

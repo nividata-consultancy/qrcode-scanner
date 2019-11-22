@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:qr_code_scanner/animations/size_transition.dart';
 import 'package:qr_code_scanner/screens/qr_generators_screens/contact.dart';
 import 'package:qr_code_scanner/screens/qr_generators_screens/email.dart';
 import 'package:qr_code_scanner/screens/qr_generators_screens/messages.dart';
 import 'package:qr_code_scanner/screens/qr_generators_screens/phone_number.dart';
 import 'package:qr_code_scanner/screens/qr_generators_screens/web_url.dart';
+import 'package:qr_code_scanner/screens/qr_generators_screens/wifi.dart';
 
 class QRCodeGenerator extends StatefulWidget {
   @override
@@ -99,6 +101,7 @@ class _QRCodeGeneratorState extends State<QRCodeGenerator> {
             width: 1.5,
           )),
       child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
@@ -124,24 +127,19 @@ class _QRCodeGeneratorState extends State<QRCodeGenerator> {
         ),
         onTap: () => {
           if (number == 0)
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PhoneNumberQR()))
+            Navigator.push(context, SizeRoute(page: PhoneNumberQR()))
           else if (number == 1)
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => ContactQR()))
+            Navigator.push(context, SizeRoute(page: ContactQR()))
           else if (number == 2)
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => WebUrlQR()))
+            Navigator.push(context, SizeRoute(page: WebUrlQR()))
           else if (number == 3)
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MessageQR()))
+            Navigator.push(context, SizeRoute(page: MessageQR()))
           else if (number == 4)
-            {}
+            Navigator.push(context, SizeRoute(page: WifiQR()))
           else if (number == 5)
-            {}
+            Navigator.push(context, SizeRoute(page: EmailQR()))
           else
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => EmailQR()))
+            Navigator.push(context, SizeRoute(page: EmailQR()))
         },
       ),
     );

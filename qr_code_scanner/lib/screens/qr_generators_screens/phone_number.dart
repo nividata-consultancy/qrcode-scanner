@@ -31,7 +31,7 @@ class _PhoneNumberQRState extends State<PhoneNumberQR> {
               size: 18.0,
             ),
             Text(
-              " ${Strings.lbl_phone_number}",
+              " ${Strings.lbl_phone}",
               style: TextStyle(fontFamily: 'Righteous', color: Colors.black),
             )
           ],
@@ -57,53 +57,53 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(40.0, 50.0, 40.0, 10.0),
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  keyboardType: TextInputType.phone,
-                  maxLines: 1,
-                  maxLength: 15,
-                  controller: textEditingController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: Strings.lbl_phone,
-                    errorText: _inputErrorText,
-                  ),
-                  validator: (value) {
-                    if (value.isEmpty)
-                      return 'Phone number is required';
-                    else
-                      return null;
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: MaterialButton(
-                    color: Colors.deepOrange,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6.0)),
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        _dataString = ("tel:${textEditingController.text}");
-                        _inputErrorText = null;
-                        phoneInputBS(_dataString, context);
-                      }
-                    },
-                    child: Text('Generate QR',
-                        style: TextStyle(color: Colors.white)),
-                  ),
-                )
-              ],
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: new Form(
+        key: _formKey,
+        autovalidate: false,
+        child: new ListView(
+          padding: const EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 16.0),
+          shrinkWrap: true,
+          children: <Widget>[
+            TextFormField(
+              keyboardType: TextInputType.phone,
+              maxLines: 1,
+              maxLength: 15,
+              controller: textEditingController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: Strings.lbl_phone,
+                errorText: _inputErrorText,
+              ),
+              validator: (value) {
+                if (value.isEmpty)
+                  return 'Phone number is required';
+                else
+                  return null;
+              },
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: MaterialButton(
+                color: Colors.deepOrange,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0)),
+                onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    _dataString = ("tel:${textEditingController.text}");
+                    _inputErrorText = null;
+                    phoneInputBS(_dataString, context);
+                  }
+                },
+                child:
+                    Text('Generate QR', style: TextStyle(color: Colors.white)),
+              ),
+            )
+          ],
         ),
-      ],
+      ),
     );
   }
 
