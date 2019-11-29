@@ -118,6 +118,7 @@ class _WifiScreenState extends State<WifiScreen> {
                 child: TextFormField(
                   keyboardType: TextInputType.text,
                   maxLines: 1,
+                  maxLength: 30,
                   controller: txtSSIDController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -126,7 +127,7 @@ class _WifiScreenState extends State<WifiScreen> {
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
-                    if (value.isEmpty)
+                    if (value.trim().isEmpty)
                       return 'SSID is required';
                     else
                       return null;
@@ -139,6 +140,7 @@ class _WifiScreenState extends State<WifiScreen> {
                   obscureText: true,
                   keyboardType: TextInputType.visiblePassword,
                   maxLines: 1,
+                  maxLength: 20,
                   controller: txtPASSWORDContentController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -146,7 +148,7 @@ class _WifiScreenState extends State<WifiScreen> {
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
-                    if (value.isEmpty)
+                    if (dropdownValue != 'None' && value.trim().isEmpty)
                       return 'Password is required';
                     else
                       return null;
@@ -162,7 +164,7 @@ class _WifiScreenState extends State<WifiScreen> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _dataString =
-                          ("WIFI:T:$dropdownValue;S:${txtSSIDController.text};P:${txtPASSWORDContentController.text};;");
+                          ("WIFI:T:$dropdownValue;S:${txtSSIDController.text.trim()};P:${txtPASSWORDContentController.text.trim()};;");
                       _inputErrorText = null;
                       phoneInputBS(_dataString, context);
                     }
@@ -219,15 +221,10 @@ class _WifiScreenState extends State<WifiScreen> {
                       child: RepaintBoundary(
                         key: globalKey,
                         child: QrImage(
+                          version: QrVersions.auto,
+                          gapless: false,
                           data: _dataString,
                           size: 0.38 * bodyHeight,
-                          onError: (ex) {
-                            print("[QR] ERROR - $ex");
-                            setState(() {
-                              _inputErrorText =
-                                  "Error! Maybe your input value is too long?";
-                            });
-                          },
                         ),
                       ),
                     ),

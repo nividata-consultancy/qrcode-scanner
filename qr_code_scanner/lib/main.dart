@@ -1,24 +1,36 @@
-import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qr_code_scanner/res/strings.dart';
 import 'package:qr_code_scanner/screens/landing_screen.dart';
+import 'package:qr_code_scanner/screens/scan/scan.dart';
 
 import 'animations/animate_button.dart';
+import 'animations/size_transition.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme:
+          ThemeData(primarySwatch: Colors.blue, backgroundColor: Colors.white),
+      home: MyQRApp(),
+    );
+  }
+}
+
+class MyQRApp extends StatefulWidget {
   // This widget is the root of your application.
 
   @override
-  _MyAppState createState() => _MyAppState();
+  _MyQRAppState createState() => _MyQRAppState();
 }
 
-class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
-  String barcode = "";
+class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
   AnimationController _controller;
   @override
   initState() {
@@ -38,10 +50,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme:
-          ThemeData(primarySwatch: Colors.blue, backgroundColor: Colors.white),
       home: Scaffold(
         extendBody: true,
         body: QRCodeGenerator(),
@@ -63,7 +72,8 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
             Padding(
               padding: const EdgeInsets.all(7.0),
               child: FloatingActionButton(
-                onPressed: scan,
+                onPressed: () =>
+                    Navigator.push(context, SizeRoute(page: ScanScreen())),
                 elevation: 0.0,
                 backgroundColor: Color.fromRGBO(255, 87, 34, 1),
                 child: SvgPicture.asset(
@@ -114,25 +124,5 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
-  }
-
-  Future scan() async {
-    try {
-      String barcode = await BarcodeScanner.scan();
-      setState(() => this.barcode = barcode);
-    } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
-        setState(() {
-          this.barcode = 'The user did not grant the camera permission!';
-        });
-      } else {
-        setState(() => this.barcode = 'Unknown error: $e');
-      }
-    } on FormatException {
-      setState(() => this.barcode =
-          'null (User returned using the "back"-button before scanning anything. Result)');
-    } catch (e) {
-      setState(() => this.barcode = 'Unknown error: $e');
-    }
   }
 }

@@ -58,71 +58,6 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // return Column(
-    //   children: <Widget>[
-    //     Form(
-    //       key: _formKey,
-    //       child: Padding(
-    //         padding: const EdgeInsets.fromLTRB(40.0, 50.0, 40.0, 10.0),
-    //         child: Column(
-    //           children: <Widget>[
-    //             TextFormField(
-    //               keyboardType: TextInputType.phone,
-    //               maxLines: 1,
-    //               controller: txtToController,
-    //               decoration: InputDecoration(
-    //                 border: OutlineInputBorder(),
-    //                 labelText: Strings.lbl_to,
-    //                 errorText: _inputErrorText,
-    //               ),
-    //               validator: (value) {
-    //                 if (value.isEmpty)
-    //                   return 'Receiver number is required';
-    //                 else
-    //                   return null;
-    //               },
-    //             ),
-    //             TextFormField(
-    //               keyboardType: TextInputType.multiline,
-    //               maxLines: null,
-    //               controller: txtMessageController,
-    //               decoration: InputDecoration(
-    //                 border: OutlineInputBorder(),
-    //                 labelText: Strings.lbl_message,
-    //                 errorText: _inputErrorText,
-    //               ),
-    //               validator: (value) {
-    //                 if (value.isEmpty)
-    //                   return 'Message text is required';
-    //                 else
-    //                   return null;
-    //               },
-    //             ),
-    //             Padding(
-    //               padding: const EdgeInsets.symmetric(vertical: 16.0),
-    //               child: MaterialButton(
-    //                 color: Colors.deepOrange,
-    //                 shape: RoundedRectangleBorder(
-    //                     borderRadius: BorderRadius.circular(6.0)),
-    //                 onPressed: () {
-    //                   if (_formKey.currentState.validate()) {
-    //                     _dataString =
-    //                         ("SMSTO: ${txtToController.text}: ${txtMessageController.text}");
-    //                     _inputErrorText = null;
-    //                     phoneInputBS(_dataString, context);
-    //                   }
-    //                 },
-    //                 child: Text('Generate QR',
-    //                     style: TextStyle(color: Colors.white)),
-    //               ),
-    //             )
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   ],
-    // );
-
     return SafeArea(
       top: false,
       bottom: false,
@@ -138,15 +73,16 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                 child: TextFormField(
                   keyboardType: TextInputType.phone,
                   maxLines: 1,
+                  maxLength: 15,
                   controller: txtToController,
                   decoration: InputDecoration(
-                    hintText: Strings.lbl_phone,
+                    hintText: "+xx xxxxxxxxxx",
                     border: OutlineInputBorder(),
                     labelText: Strings.lbl_to,
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
-                    if (value.isEmpty)
+                    if (value.trim().isEmpty)
                       return 'Receiver number is required';
                     else
                       return null;
@@ -163,6 +99,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                     textDirection: TextDirection.ltr,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
+                    maxLength: 160,
                     controller: txtMessageController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -170,7 +107,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                       errorText: _inputErrorText,
                     ),
                     validator: (value) {
-                      if (value.isEmpty)
+                      if (value.trim().isEmpty)
                         return 'Message text is required';
                       else
                         return null;
@@ -187,7 +124,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _dataString =
-                          ("SMSTO: ${txtToController.text}: ${txtMessageController.text}");
+                          ("SMSTO: ${txtToController.text.trim()}: ${txtMessageController.text.trim()}");
                       _inputErrorText = null;
                       phoneInputBS(_dataString, context);
                     }
@@ -244,16 +181,10 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                       child: RepaintBoundary(
                         key: globalKey,
                         child: QrImage(
-                          version: 14,
+                          gapless: false,
+                          version: QrVersions.auto,
                           data: _dataString,
                           size: 0.38 * bodyHeight,
-                          onError: (ex) {
-                            print("[QR] ERROR - $ex");
-                            setState(() {
-                              _inputErrorText =
-                                  "Error! Maybe your input value is too long?";
-                            });
-                          },
                         ),
                       ),
                     ),

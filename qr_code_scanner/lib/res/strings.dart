@@ -1,9 +1,13 @@
 class Strings {
   // Landing screen
   static const String lbl_phone_number = "QR Code Generator";
+  static const String lbl_qr_scanner = "Scanner";
   static const String lbl_qr_code = "QR Code";
   static const String lbl_generate = "Generate";
   static const String lbl_history = "History";
+
+  // QR Scanner
+  static const String lbl_scan = "Scan";
 
   // Phone Number
   static const String lbl_phone = "Phone Number";

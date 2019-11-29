@@ -78,7 +78,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                 errorText: _inputErrorText,
               ),
               validator: (value) {
-                if (value.isEmpty)
+                if (value.trim().isEmpty)
                   return 'Web url is required';
                 else
                   return null;
@@ -94,7 +94,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                   if (_formKey.currentState.validate()) {
                     _dataString = textEditingController.text;
                     _inputErrorText = null;
-                    phoneInputBS(textEditingController.text, context);
+                    phoneInputBS(textEditingController.text.trim(), context);
                   }
                 },
                 child:
@@ -150,15 +150,10 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                       child: RepaintBoundary(
                         key: globalKey,
                         child: QrImage(
+                          version: QrVersions.auto,
+                          gapless: false,
                           data: _dataString,
                           size: 0.38 * bodyHeight,
-                          onError: (ex) {
-                            print("[QR] ERROR - $ex");
-                            setState(() {
-                              _inputErrorText =
-                                  "Error! Maybe your input value is too long?";
-                            });
-                          },
                         ),
                       ),
                     ),

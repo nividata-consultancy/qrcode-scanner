@@ -74,11 +74,12 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
               controller: textEditingController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
+                hintText: "+xx xxxxxxxxxx",
                 labelText: Strings.lbl_phone,
                 errorText: _inputErrorText,
               ),
               validator: (value) {
-                if (value.isEmpty)
+                if (value.trim().isEmpty)
                   return 'Phone number is required';
                 else
                   return null;
@@ -92,7 +93,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                     borderRadius: BorderRadius.circular(6.0)),
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
-                    _dataString = ("tel:${textEditingController.text}");
+                    _dataString = ("tel:${textEditingController.text?.trim()}");
                     _inputErrorText = null;
                     phoneInputBS(_dataString, context);
                   }
@@ -119,8 +120,8 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
       final file = await new File('${tempDir.path}/image.png').create();
       await file.writeAsBytes(pngBytes);
 
-      final channel = const MethodChannel('channel:me.alfian.share/share');
-      channel.invokeMethod('shareFile', 'image.png');
+      // final channel = const MethodChannel('channel:me.alfian.share/share');
+      // channel.invokeMethod('shareFile', 'image.png');
     } catch (e) {
       print(e.toString());
     }
@@ -150,15 +151,10 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                       child: RepaintBoundary(
                         key: globalKey,
                         child: QrImage(
+                          version: QrVersions.auto,
+                          gapless: false,
                           data: _dataString,
                           size: 0.38 * bodyHeight,
-                          onError: (ex) {
-                            print("[QR] ERROR - $ex");
-                            setState(() {
-                              _inputErrorText =
-                                  "Error! Maybe your input value is too long?";
-                            });
-                          },
                         ),
                       ),
                     ),

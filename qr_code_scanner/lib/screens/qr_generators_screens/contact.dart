@@ -87,7 +87,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                   errorText: _inputErrorText,
                 ),
                 validator: (value) {
-                  if (value.isEmpty)
+                  if (value.trim().isEmpty)
                     return 'Name is required';
                   else
                     return null;
@@ -122,7 +122,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                     labelText: "Address",
                   ),
                   validator: (value) {
-                    if (value.isEmpty)
+                    if (value.trim().isEmpty)
                       return 'Address is required';
                     else
                       return null;
@@ -143,7 +143,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                   errorText: _inputErrorText,
                 ),
                 validator: (value) {
-                  if (value.isEmpty)
+                  if (value.trim().isEmpty)
                     return 'Phone number is required';
                   else
                     return null;
@@ -173,6 +173,18 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                   border: OutlineInputBorder(),
                   labelText: "Email",
                 ),
+                validator: (value) {
+                  if (value.trim().isEmpty)
+                    return 'Email is required';
+                  else {
+                    if (RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(value))
+                      return null;
+                    else
+                      return 'Invalid email id';
+                  }
+                },
               ),
             ),
             Padding(
@@ -197,7 +209,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                     _dataString =
-                        ("MECARD:N:${txtNameController.text};TEL:${txtPhoneNumberController.text};ADR:${txtAddressController};EMAIL:${txtEmailController.text};URL:${txtWebSiteController.text};NICKNAME:${txtNickNameController.text};");
+                        ("MECARD:N:${txtNameController.text.trim()};TEL:${txtPhoneNumberController.text.trim()};ADR:${txtAddressController.text.trim()};EMAIL:${txtEmailController.text.trim()};URL:${txtWebSiteController.text.trim()};NICKNAME:${txtNickNameController.text.trim()};");
                     _inputErrorText = null;
                     phoneInputBS(_dataString, context);
                   }
@@ -257,17 +269,10 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                       child: RepaintBoundary(
                         key: globalKey,
                         child: QrImage(
-                          version: 17,
+                          version: QrVersions.auto,
                           gapless: false,
                           data: _dataString,
                           size: 0.38 * bodyHeight,
-                          onError: (ex) {
-                            print("[QR] ERROR - $ex");
-                            setState(() {
-                              _inputErrorText =
-                                  "Error! Maybe your input value is too long?";
-                            });
-                          },
                         ),
                       ),
                     ),

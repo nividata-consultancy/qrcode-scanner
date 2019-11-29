@@ -83,10 +83,16 @@ class _EmailScreenState extends State<EmailScreen> {
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
-                    if (value.isEmpty)
-                      return 'Email address is required';
-                    else
-                      return null;
+                    if (value.trim().isEmpty)
+                      return 'Email is required';
+                    else {
+                      if (RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(value))
+                        return null;
+                      else
+                        return 'Invalid email id';
+                    }
                   },
                 ),
               ),
@@ -95,6 +101,7 @@ class _EmailScreenState extends State<EmailScreen> {
                 child: TextFormField(
                   keyboardType: TextInputType.text,
                   maxLines: 1,
+                  maxLength: 75,
                   controller: txtSubjectController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -102,7 +109,7 @@ class _EmailScreenState extends State<EmailScreen> {
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
-                    if (value.isEmpty)
+                    if (value.trim().isEmpty)
                       return 'Mail subject is required';
                     else
                       return null;
@@ -119,6 +126,7 @@ class _EmailScreenState extends State<EmailScreen> {
                     textDirection: TextDirection.ltr,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
+                    maxLength: 160,
                     controller: txtBodyController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -126,7 +134,7 @@ class _EmailScreenState extends State<EmailScreen> {
                       errorText: _inputErrorText,
                     ),
                     validator: (value) {
-                      if (value.isEmpty)
+                      if (value.trim().isEmpty)
                         return 'Mail body is required';
                       else
                         return null;
@@ -143,7 +151,7 @@ class _EmailScreenState extends State<EmailScreen> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _dataString =
-                          ("mailto:${txtEmailController.text}?subject=${txtSubjectController.text}&body=${txtBodyController.text}");
+                          ("mailto:${txtEmailController.text.trim()}?subject=${txtSubjectController.text.trim()}&body=${txtBodyController.text.trim()}");
                       _inputErrorText = null;
                       phoneInputBS(_dataString, context);
                     }
@@ -201,16 +209,9 @@ class _EmailScreenState extends State<EmailScreen> {
                         key: globalKey,
                         child: QrImage(
                           gapless: false,
-                          version: 20,
+                          version: QrVersions.auto,
                           data: _dataString,
                           size: 0.38 * bodyHeight,
-                          onError: (ex) {
-                            print("[QR] ERROR - $ex");
-                            setState(() {
-                              _inputErrorText =
-                                  "Error! Maybe your input value is too long?";
-                            });
-                          },
                         ),
                       ),
                     ),
