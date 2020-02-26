@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qr_code_scanner/res/strings.dart';
 import 'package:qr_code_scanner/screens/landing_screen.dart';
 import 'package:qr_code_scanner/screens/scan/scan.dart';
+import 'package:qr_code_scanner/screens/setting.dart';
 
 import 'animations/animate_button.dart';
 import 'animations/size_transition.dart';
@@ -32,6 +34,9 @@ class MyQRApp extends StatefulWidget {
 
 class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
   AnimationController _controller;
+  int _selectedIndex = 1;
+  final List<Widget> _children = [Setting(), QRCodeGenerator()];
+
   @override
   initState() {
     super.initState();
@@ -39,6 +44,12 @@ class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
       duration: const Duration(milliseconds: 1000),
       vsync: this,
     )..repeat(reverse: true);
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -53,7 +64,55 @@ class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         extendBody: true,
-        body: QRCodeGenerator(),
+        backgroundColor: Colors.white,
+        body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                expandedHeight: 100.0,
+                floating: true,
+                pinned: true,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0)),
+                backgroundColor: Colors.white,
+                actions: <Widget>[
+                  IconButton(
+                    icon: new Icon(
+                      Icons.settings,
+                      color: Colors.black,
+                    ),
+                    onPressed: () =>
+                        {Navigator.push(context, SizeRoute(page: Setting()))},
+                  ),
+                ],
+                flexibleSpace: FlexibleSpaceBar(
+                  collapseMode: CollapseMode.parallax,
+                  centerTitle: true,
+                  title: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        FontAwesomeIcons.qrcode,
+                        color: Colors.deepOrange,
+                      ),
+                      Text(" QR code",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 24.0,
+                              fontFamily: 'Righteous',
+                              fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  background: Container(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ];
+          },
+          body: _children[_selectedIndex],
+        ),
         floatingActionButton: Stack(
           children: <Widget>[
             AnimatedLoader(
@@ -93,32 +152,34 @@ class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
             clipBehavior: Clip.hardEdge,
             notchMargin: 4.0,
             child: BottomNavigationBar(
-                selectedItemColor: Colors.deepOrange,
-                type: BottomNavigationBarType.fixed,
-                currentIndex: 1,
-                elevation: 100.0,
-                backgroundColor: Colors.white70,
-                selectedLabelStyle: TextStyle(
-                    color: Colors.greenAccent,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12.0),
-                unselectedItemColor: Colors.black87,
-                unselectedLabelStyle:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
-                items: [
-                  BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.history,
-                        size: 22.0,
-                      ),
-                      title: Text(Strings.lbl_history)),
-                  BottomNavigationBarItem(
-                      icon: Icon(
-                        FontAwesomeIcons.qrcode,
-                        size: 18.0,
-                      ),
-                      title: Text(Strings.lbl_generate))
-                ]),
+              selectedItemColor: Colors.deepOrange,
+              type: BottomNavigationBarType.fixed,
+              currentIndex: _selectedIndex,
+              elevation: 100.0,
+              backgroundColor: Colors.white70,
+              selectedLabelStyle: TextStyle(
+                  color: Colors.greenAccent,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.0),
+              unselectedItemColor: Colors.black87,
+              unselectedLabelStyle:
+                  TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
+              items: [
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.history,
+                      size: 22.0,
+                    ),
+                    title: Text(Strings.lbl_history)),
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      FontAwesomeIcons.qrcode,
+                      size: 18.0,
+                    ),
+                    title: Text(Strings.lbl_generate))
+              ],
+              onTap: _onItemTapped,
+            ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

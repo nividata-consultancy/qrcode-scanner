@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+String mailTo = '''mailto:info@nividata.com?subject=Feedback for QR code''';
 const double kBottomContainerHeight = 80.0;
 const Color kBottomContainerColor = Color(0xFFEB1555);
 const Color kActiveCardColor = Color(0xFF1D1E33);

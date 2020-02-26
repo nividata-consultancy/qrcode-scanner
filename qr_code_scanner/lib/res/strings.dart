@@ -9,6 +9,9 @@ class Strings {
   // QR Scanner
   static const String lbl_scan = "Scan";
 
+  // Setting
+  static const String lbl_setting = "Setting";
+
   // Phone Number
   static const String lbl_phone = "Phone Number";
 
