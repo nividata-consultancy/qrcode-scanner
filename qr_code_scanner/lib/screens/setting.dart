@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:qr_code_scanner/animations/size_transition.dart';
+import 'package:qr_code_scanner/screens/about.dart';
 import 'package:qr_code_scanner/screens/qr_generators_screens/contact.dart';
 import 'package:qr_code_scanner/util/app_util.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,8 +22,50 @@ class Setting extends StatefulWidget {
 class _SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SettingScreen(),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        extendBody: true,
+        backgroundColor: Colors.white,
+        body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                expandedHeight: 100.0,
+                floating: true,
+                pinned: true,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0)),
+                backgroundColor: Colors.white,
+                flexibleSpace: FlexibleSpaceBar(
+                  collapseMode: CollapseMode.parallax,
+                  centerTitle: true,
+                  title: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        FontAwesomeIcons.qrcode,
+                        color: Colors.deepOrange,
+                      ),
+                      Text(" QR code",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 24.0,
+                              fontFamily: 'Righteous',
+                              fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  background: Container(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ];
+          },
+          body: SettingScreen(),
+        ),
+      ),
     );
   }
 }
@@ -64,7 +109,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     print(index);
                     switch (index) {
                       case 0:
-                        Navigator.push(context, SizeRoute(page: ContactQR()));
+                        Navigator.push(context, SizeRoute(page: AboutUS()));
                         break;
                       case 1:
                         AppUtil.onShareTap(context);
@@ -86,7 +131,14 @@ class _SettingScreenState extends State<SettingScreen> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      throw 'Could not launch $url';
+      Fluttertoast.showToast(
+          msg: "No any email app is available.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 14.0);
     }
   }
 }

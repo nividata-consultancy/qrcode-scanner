@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:qr_code_scanner/res/strings.dart';
 import 'package:qr_code_scanner/screens/landing_screen.dart';
 import 'package:qr_code_scanner/screens/scan/scan.dart';
 import 'package:qr_code_scanner/screens/setting.dart';
@@ -34,8 +33,6 @@ class MyQRApp extends StatefulWidget {
 
 class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
   AnimationController _controller;
-  int _selectedIndex = 1;
-  final List<Widget> _children = [Setting(), QRCodeGenerator()];
 
   @override
   initState() {
@@ -44,12 +41,6 @@ class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
       duration: const Duration(milliseconds: 1000),
       vsync: this,
     )..repeat(reverse: true);
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
   }
 
   @override
@@ -111,7 +102,7 @@ class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
               ),
             ];
           },
-          body: _children[_selectedIndex],
+          body:  QRCodeGenerator(),
         ),
         floatingActionButton: Stack(
           children: <Widget>[
@@ -145,45 +136,46 @@ class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
             ),
           ],
         ),
-        bottomNavigationBar: Container(
-          // color: Colors.green,
-          child: BottomAppBar(
-            shape: CircularNotchedRectangle(),
-            clipBehavior: Clip.hardEdge,
-            notchMargin: 4.0,
-            child: BottomNavigationBar(
-              selectedItemColor: Colors.deepOrange,
-              type: BottomNavigationBarType.fixed,
-              currentIndex: _selectedIndex,
-              elevation: 100.0,
-              backgroundColor: Colors.white70,
-              selectedLabelStyle: TextStyle(
-                  color: Colors.greenAccent,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12.0),
-              unselectedItemColor: Colors.black87,
-              unselectedLabelStyle:
-                  TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
-              items: [
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.history,
-                      size: 22.0,
-                    ),
-                    title: Text(Strings.lbl_history)),
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      FontAwesomeIcons.qrcode,
-                      size: 18.0,
-                    ),
-                    title: Text(Strings.lbl_generate))
-              ],
-              onTap: _onItemTapped,
-            ),
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       ),
     );
   }
 }
+/*
+bottomNavigationBar: Container(
+// color: Colors.green,
+child: BottomAppBar(
+shape: CircularNotchedRectangle(),
+clipBehavior: Clip.hardEdge,
+notchMargin: 4.0,
+child: BottomNavigationBar(
+selectedItemColor: Colors.deepOrange,
+type: BottomNavigationBarType.fixed,
+currentIndex: _selectedIndex,
+elevation: 100.0,
+backgroundColor: Colors.white70,
+selectedLabelStyle: TextStyle(
+color: Colors.greenAccent,
+fontWeight: FontWeight.bold,
+fontSize: 12.0),
+unselectedItemColor: Colors.black87,
+unselectedLabelStyle:
+TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
+items: [
+BottomNavigationBarItem(
+icon: Icon(
+Icons.history,
+size: 22.0,
+),
+title: Text(Strings.lbl_history)),
+BottomNavigationBarItem(
+icon: Icon(
+FontAwesomeIcons.qrcode,
+size: 18.0,
+),
+title: Text(Strings.lbl_generate))
+],
+onTap: _onItemTapped,
+),
+),
+),*/
