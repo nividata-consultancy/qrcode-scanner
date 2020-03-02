@@ -1,38 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:launch_review/launch_review.dart';
-
-import '../constants.dart';
+import 'package:qr_code_scanner/constants.dart';
 
 class AboutUS extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.white,
-        systemNavigationBarColor: Colors.black,
-        systemNavigationBarDividerColor: Colors.black,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
-
-    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
-    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        centerTitle: false,
+        centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.black87),
         title: Text(
-          'About App',
+          'How it\'s work',
           textScaleFactor: 1.2,
-          textDirection: TextDirection.ltr,
-          textAlign: TextAlign.start,
           style: TextStyle(
               color: Colors.black87,
               fontWeight: FontWeight.bold,
@@ -40,124 +19,212 @@ class AboutUS extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
       ),
-      body: Container(
-        color:  Colors.white,
-        child: bannerImg(context),
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
+        child: Table(
+          columnWidths: {
+            0: FlexColumnWidth(0.5),
+            1: FlexColumnWidth(0.4),
+            2: FlexColumnWidth(8.0),
+          },
+          children: [
+            TableRow(children: [
+              TableCell(
+                child: getNumberText("1)"),
+              ),
+              TableCell(
+                child: Text(""),
+              ),
+              TableCell(
+                child: getTitleText("Scan QR code"),
+              )
+            ]),
+            TableRow(children: [
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getArrowText(),
+              ),
+              TableCell(
+                child: getDescText(sqr1),
+              )
+            ]),
+            TableRow(children: [
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getArrowText(),
+              ),
+              TableCell(
+                child: getDescText(sqr2),
+              )
+            ]),
+            TableRow(children: [
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getArrowText(),
+              ),
+              TableCell(
+                child: getDescText(sqr3),
+              )
+            ]),
+            TableRow(children: [
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getArrowText(),
+              ),
+              TableCell(
+                child: getDescText(sqr4),
+              )
+            ]),
+            TableRow(children: [
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getSpaceText(),
+              )
+            ]),
+            TableRow(children: [
+              TableCell(
+                child: getNumberText("2)"),
+              ),
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getTitleText("Generate QR code"),
+              )
+            ]),
+            TableRow(children: [
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getArrowText(),
+              ),
+              TableCell(
+                child: getDescText(gqr1),
+              )
+            ]),
+            TableRow(children: [
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getDescText(gqr11),
+              )
+            ]),
+            TableRow(children: [
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getDescText(gqr12),
+              )
+            ]),
+            TableRow(children: [
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getDescText(gqr13),
+              )
+            ]),
+            TableRow(children: [
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getDescText(gqr14),
+              )
+            ]),
+            TableRow(children: [
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getDescText(gqr15),
+              )
+            ]),
+            TableRow(children: [
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getDescText(gqr16),
+              )
+            ]),
+            TableRow(children: [
+              TableCell(
+                child: getSpaceText(),
+              ),
+              TableCell(
+                child: getArrowText(),
+              ),
+              TableCell(
+                child: getDescText(gqr2),
+              )
+            ])
+          ],
+        ),
       ),
     );
   }
 
-  Widget bannerImg(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: Stack(
-        fit: StackFit.loose,
-        children: <Widget>[
-          Container(
-            // height: 190.0,
-            child: Image(
-              image: AssetImage("assests/images/banner.jpg"),
-              // height: 200.0,
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.fromLTRB(20.0, 210.0, 0.0, 0.0),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Image(
-                      image: AssetImage("assets/images/ic_launcher.png"),
-                      height: 30.0,
-                      width: 30.0,
-                    ),
-                    Text(
-                      " BMI.",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                    Text(
-                      " Calculator".toUpperCase(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16.0,
-                          color: Colors.grey.shade600),
-                    ),
-                  ],
-                ),
-                Divider(
-                  color: Colors.grey,
-                  indent: 5.0,
-                  endIndent: 20.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(5.0, 10.0, 20.0, 0.0),
-                  child: Text(
-                    "",
-                    style: TextStyle(fontSize: 14.0),
-                    textAlign: TextAlign.justify,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0)),
-                    color: Colors.deepPurple,
-                    child: Text("Read More..."),
-                    textColor: Colors.white,
-                    onPressed: () {
-                      LaunchReview.launch(
-                          androidAppId: "com.nividata.bmi_calculator",
-                          iOSAppId: "com.nividataapps.bmicalculator");
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "Send us your feedback on ",
-                        style: TextStyle(
-                            fontSize: 11.0, fontWeight: FontWeight.w500),
-                      ),
-                      SelectableText(
-                        "info@nividata.com",
-                        style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 11.0,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 80.0, 0.0, 5.0),
-                  child: Text(
-                    "V" + platformVersion,
-                    style: TextStyle(fontWeight: FontWeight.w900),
-                  ),
-                ),
-                Text(
-                  "App is up to date",
-                  style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 11.0,
-                      color: Colors.grey),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+  getNumberText(text) {
+    return Text(text,
+        style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+            fontSize: 18.0));
+  }
+
+  getTitleText(text) {
+    return Text(text,
+        style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+            fontSize: 18.0));
+  }
+
+  getSpaceText() {
+    return Text("");
+  }
+
+  getArrowText() {
+    return Text("->");
+  }
+
+  getDescText(text) {
+    return Text(text, style: TextStyle(color: Colors.black54, fontSize: 15.0));
   }
 }
