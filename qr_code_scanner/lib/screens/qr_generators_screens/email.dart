@@ -70,6 +70,7 @@ class _EmailScreenState extends State<EmailScreen> {
                 child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   maxLines: 1,
+                  maxLength: 25,
                   controller: txtEmailController,
                   decoration: InputDecoration(
                     hintText: Strings.lbl_email_hint,
@@ -96,7 +97,7 @@ class _EmailScreenState extends State<EmailScreen> {
                 child: TextFormField(
                   keyboardType: TextInputType.text,
                   maxLines: 1,
-                  maxLength: 75,
+                  maxLength: 160,
                   controller: txtSubjectController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -121,7 +122,7 @@ class _EmailScreenState extends State<EmailScreen> {
                     textDirection: TextDirection.ltr,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
-                    maxLength: 160,
+                    maxLength: 500,
                     controller: txtBodyController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),

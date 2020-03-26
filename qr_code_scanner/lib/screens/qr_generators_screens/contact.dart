@@ -74,6 +74,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
               child: TextFormField(
                 keyboardType: TextInputType.text,
                 maxLines: 1,
+                maxLength: 50,
                 controller: txtNameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -93,6 +94,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
               child: TextFormField(
                 keyboardType: TextInputType.text,
                 maxLines: 1,
+                maxLength: 50,
                 controller: txtNickNameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -110,6 +112,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                   expands: true,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
+                  maxLength: 150,
                   controller: txtAddressController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -129,6 +132,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
               child: TextFormField(
                 keyboardType: TextInputType.phone,
                 maxLines: 1,
+                maxLength: 15,
                 controller: txtPhoneNumberController,
                 decoration: InputDecoration(
                   hintText: Strings.lbl_phone,
@@ -149,6 +153,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
               child: TextFormField(
                 keyboardType: TextInputType.text,
                 maxLines: 1,
+                maxLength: 50,
                 controller: txtCompanyNameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -161,6 +166,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
               child: TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 maxLines: 1,
+                maxLength: 25,
                 controller: txtEmailController,
                 decoration: InputDecoration(
                   hintText: Strings.lbl_email_hint,
@@ -186,6 +192,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
               child: TextFormField(
                 keyboardType: TextInputType.url,
                 maxLines: 1,
+                maxLength: 150,
                 controller: txtWebSiteController,
                 decoration: InputDecoration(
                   hintText: Strings.lbl_web_url_hint,
