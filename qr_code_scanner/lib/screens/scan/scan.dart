@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qr_code_scanner/res/strings.dart';
+import 'package:simple_permissions/simple_permissions.dart';
 
 class ScanScreen extends StatefulWidget {
   @override
@@ -40,17 +41,24 @@ class _ScanState extends State<ScanScreen> {
           ],
         ),
       ),
-      body: Center(
-        child: Text(
-          barcode,
-          style: new TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+      body: Padding(
+        padding: EdgeInsets.all(10),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Center(
+            child: SelectableText(
+              barcode,
+              toolbarOptions: ToolbarOptions(selectAll: true, copy: true),
+              style: new TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.camera_alt),
         label: Text("Scan"),
         backgroundColor: Colors.deepOrange,
-        onPressed: scan,
+        onPressed: handleCameraPermission,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
@@ -61,18 +69,49 @@ class _ScanState extends State<ScanScreen> {
       String barcode = await BarcodeScanner.scan();
       setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
+      print(e);
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
-          this.barcode = 'The user did not grant the camera permission!';
+          this.barcode = 'Camera permission required for scan qr code!';
         });
+      } else if (e.code == BarcodeScanner.UserCanceled) {
+        this.barcode = 'Camera permission required for scan qr code!';
       } else {
         setState(() => this.barcode = 'Unknown error: $e');
       }
     } on FormatException {
-      setState(() => this.barcode =
-          'null (User returned using the "back"-button before scanning anything. Result)');
+      Navigator.pop(context);
     } catch (e) {
       setState(() => this.barcode = 'Unknown error: $e');
     }
+  }
+
+  Future handleCameraPermission() async {
+    SimplePermissions.getPermissionStatus(Permission.Camera).then((permission) {
+      if (permission == PermissionStatus.authorized) {
+        scan();
+      } else if (permission == PermissionStatus.denied) {
+        SimplePermissions.requestPermission(Permission.Camera)
+            .then((permission) {
+          if (permission == PermissionStatus.authorized) {
+            scan();
+          } else if (permission == PermissionStatus.denied) {
+            setState(() {
+              this.barcode = 'Camera permission required for scan qr code!';
+            });
+          } else if (permission == PermissionStatus.deniedNeverAsk) {
+            setState(() {
+              this.barcode = 'Camera permission required for scan qr code!';
+              SimplePermissions.openSettings();
+            });
+          }
+        });
+      } else if (permission == PermissionStatus.deniedNeverAsk) {
+        setState(() {
+          this.barcode = 'Camera permission required for scan qr co';
+        });
+        SimplePermissions.openSettings();
+      }
+    });
   }
 }
