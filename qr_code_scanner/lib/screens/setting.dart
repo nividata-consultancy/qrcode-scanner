@@ -27,43 +27,30 @@ class _SettingState extends State<Setting> {
       home: Scaffold(
         extendBody: true,
         backgroundColor: Colors.white,
-        body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                expandedHeight: 100.0,
-                floating: true,
-                pinned: true,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6.0)),
-                backgroundColor: Colors.white,
-                flexibleSpace: FlexibleSpaceBar(
-                  collapseMode: CollapseMode.parallax,
-                  centerTitle: true,
-                  title: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(
-                        FontAwesomeIcons.qrcode,
-                        color: Colors.deepOrange,
-                      ),
-                      Text(" QR code",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 24.0,
-                              fontFamily: 'Righteous',
-                              fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  background: Container(
-                    color: Colors.white,
-                  ),
-                ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                FontAwesomeIcons.qrcode,
+                color: Colors.deepOrange,
               ),
-            ];
-          },
-          body: SettingScreen(),
+              Text(" QR code",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24.0,
+                      fontFamily: 'Righteous',
+                      fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
+        body: SafeArea(
+          bottom: true,
+          top: false,
+          child: SettingScreen(),
         ),
       ),
     );
@@ -89,42 +76,68 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return ListView.builder(
-        padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-        itemCount: _children.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-              height: 50,
-              child: GestureDetector(
-                  child: Center(
-                    child: Text(
-                      _children[index],
+    return Stack(
+      children: <Widget>[
+        ListView.builder(
+            padding: EdgeInsets.fromLTRB(8.0, 15, 8.0, 0),
+            itemCount: _children.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                  height: 40,
+                  child: GestureDetector(
+                      child: Center(
+                        child: Text(
+                          _children[index],
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.0,
+                              color: Colors.black87),
+                        ),
+                      ),
+                      onTap: () {
+                        print(index);
+                        switch (index) {
+                          case 0:
+                            Navigator.push(context, SizeRoute(page: AboutUS()));
+                            break;
+                          case 1:
+                            AppUtil.onShareTap(context);
+                            break;
+                          case 2:
+                            LaunchReview.launch(
+                                androidAppId: "com.example.qr_code_scanner",
+                                iOSAppId: "com.example.qr_code_scanner");
+                            break;
+                          case 3:
+                            launchURL(Uri.encodeFull(mailTo));
+                            break;
+                        }
+                      }));
+            }),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  CircleAvatar(
+                      radius: 20.0,
+                      backgroundImage: AssetImage("assests/images/icon.png")),
+                  Text("  NiviData\n  Consultancy",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17.0,
-                          color: Colors.black87),
-                    ),
-                  ),
-                  onTap: () {
-                    print(index);
-                    switch (index) {
-                      case 0:
-                        Navigator.push(context, SizeRoute(page: AboutUS()));
-                        break;
-                      case 1:
-                        AppUtil.onShareTap(context);
-                        break;
-                      case 2:
-                        LaunchReview.launch(
-                            androidAppId: "com.example.qr_code_scanner",
-                            iOSAppId: "com.example.qr_code_scanner");
-                        break;
-                      case 3:
-                        launchURL(Uri.encodeFull(mailTo));
-                        break;
-                    }
-                  }));
-        });
+                          color: Colors.black54,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w700)),
+                ],
+              ),
+            ),
+          ],
+        )
+      ],
+    );
   }
 
   launchURL(String url) async {
