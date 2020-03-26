@@ -27,10 +27,8 @@ class _DetailState extends State<DetailWidget> {
           IconButton(
             icon: Icon(Icons.share),
             onPressed: () {
-
               final channel = const MethodChannel('channel:me.alfian.share/share');
               channel.invokeMethod('shareFile', 'image.png');
-
             },
           )
 
@@ -48,7 +46,5 @@ class _DetailState extends State<DetailWidget> {
       ),
     )
     );
-
   }
-
 }

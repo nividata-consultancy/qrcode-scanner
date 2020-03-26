@@ -288,7 +288,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
-                        log("ok");
+                        log("ok123");
                         _captureAndSharePng();
                       },
                     )
