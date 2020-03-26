@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
@@ -226,6 +227,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
 
   Future<void> _captureAndSharePng() async {
     try {
+      print("ok");
       RenderRepaintBoundary boundary =
           globalKey.currentContext.findRenderObject();
       var image = await boundary.toImage();
@@ -240,6 +242,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
       channel.invokeMethod('shareFile', 'image.png');
     } catch (e) {
       print(e.toString());
+      log(e);
     }
   }
 
@@ -285,6 +288,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
+                        log("ok");
                         _captureAndSharePng();
                       },
                     )
