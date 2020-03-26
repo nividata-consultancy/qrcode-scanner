@@ -9,7 +9,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:icon="@mipmap/ic_launcher"
-        android:label="qr_code_scanner">
+        android:label="QR Code">
 
         <activity
             android:name=".MainActivity"
