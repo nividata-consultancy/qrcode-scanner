@@ -1,3 +1,4 @@
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -6,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qr_code_scanner/screens/landing_screen.dart';
 import 'package:qr_code_scanner/screens/scan/scan.dart';
 import 'package:qr_code_scanner/screens/setting.dart';
+import 'package:simple_permissions/simple_permissions.dart';
 
 import 'animations/animate_button.dart';
 import 'animations/size_transition.dart';
@@ -128,8 +130,7 @@ class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
             Padding(
               padding: const EdgeInsets.all(7.0),
               child: FloatingActionButton(
-                onPressed: () =>
-                    Navigator.push(context, SizeRoute(page: ScanScreen())),
+                onPressed: () => handleCameraPermission(),
                 elevation: 0.0,
                 backgroundColor: Color.fromRGBO(255, 87, 34, 1),
                 child: SvgPicture.asset(
@@ -146,7 +147,40 @@ class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
       ),
     );
   }
+
+  Future scan() async {
+    try {
+      String barcode = await BarcodeScanner.scan();
+      Navigator.push(context, SizeRoute(page: ScanScreen(barcode: barcode,)));
+    } on PlatformException catch (e) {
+      print(e);
+      if (e.code == BarcodeScanner.CameraAccessDenied) {
+      } else if (e.code == BarcodeScanner.UserCanceled) {
+      } else {}
+    } on FormatException {} catch (e) {}
+  }
+
+  Future handleCameraPermission() async {
+    SimplePermissions.getPermissionStatus(Permission.Camera).then((permission) {
+      if (permission == PermissionStatus.authorized) {
+        scan();
+      } else if (permission == PermissionStatus.denied) {
+        SimplePermissions.requestPermission(Permission.Camera)
+            .then((permission) {
+          if (permission == PermissionStatus.authorized) {
+            scan();
+          } else if (permission == PermissionStatus.denied) {
+          } else if (permission == PermissionStatus.deniedNeverAsk) {
+            SimplePermissions.openSettings();
+          }
+        });
+      } else if (permission == PermissionStatus.deniedNeverAsk) {
+        SimplePermissions.openSettings();
+      }
+    });
+  }
 }
+
 /*
 bottomNavigationBar: Container(
 // color: Colors.green,
