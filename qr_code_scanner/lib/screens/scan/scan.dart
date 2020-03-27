@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qr_code_scanner/models/QrCodeTextParser.dart';
@@ -32,22 +31,29 @@ class ScanScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.all(10),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: <Widget>[
-              Center(
-                child: SelectableText(
-                  QrCodeTextParser.parser(barcode).toString(),
-                  toolbarOptions: ToolbarOptions(selectAll: true, copy: true),
-                  style:
-                      new TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ],
-          ),
+        child: Center(
+          child: getWidget(barcode),
         ),
       ),
     );
   }
 }
+
+Widget getWidget(String barcode) {
+  List<QrDisplayData> list = QrCodeTextParser.getDisplayData(barcode);
+  print(list.toString());
+  return ListView.builder(
+      itemCount: list.length,
+      itemBuilder: (context, postion) {
+        return ListTile(
+          title: Text(list[postion].name),
+          subtitle: Text(list[postion].value),
+        );
+      });
+}
+/*SelectableText(
+QrCodeTextParser.parser(barcode).toString(),
+toolbarOptions: ToolbarOptions(selectAll: true, copy: true),
+style:
+new TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+)*/

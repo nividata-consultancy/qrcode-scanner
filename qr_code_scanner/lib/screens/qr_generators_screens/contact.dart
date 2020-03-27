@@ -52,7 +52,6 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
   final txtCompanyNameController = TextEditingController();
   final txtAddressController = TextEditingController();
   final txtWebSiteController = TextEditingController();
-  final txtNickNameController = TextEditingController();
 
   String _dataString = "Hello from this QR";
   String _inputErrorText;
@@ -87,20 +86,6 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                   else
                     return null;
                 },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                keyboardType: TextInputType.text,
-                maxLines: 1,
-                maxLength: 50,
-                controller: txtNickNameController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Nick Name",
-                  errorText: _inputErrorText,
-                ),
               ),
             ),
             SizedBox(
@@ -210,7 +195,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                     _dataString =
-                        ("MECARD:N:${txtNameController.text.trim()};TEL:${txtPhoneNumberController.text.trim()};ADR:${txtAddressController.text.trim()};EMAIL:${txtEmailController.text.trim()};URL:${txtWebSiteController.text.trim()};NICKNAME:${txtNickNameController.text.trim()};");
+                          ("MECARD:N:${txtNameController.text.trim()};TEL:${txtPhoneNumberController.text.trim()};ADR:${txtAddressController.text.trim()};EMAIL:${txtEmailController.text.trim()};URL:${txtWebSiteController.text.trim()};");
                     _inputErrorText = null;
                     phoneInputBS(_dataString, context);
                   }
