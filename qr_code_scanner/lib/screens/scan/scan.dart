@@ -44,10 +44,25 @@ Widget getWidget(String barcode) {
   print(list.toString());
   return ListView.builder(
       itemCount: list.length,
-      itemBuilder: (context, postion) {
-        return ListTile(
-          title: Text(list[postion].name),
-          subtitle: Text(list[postion].value),
+      itemBuilder: (context, position) {
+        return Padding(
+          padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                list[position].name,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                list[position].value,
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey[700]),
+              )
+            ],
+          ),
         );
       });
 }
