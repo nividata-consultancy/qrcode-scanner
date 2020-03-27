@@ -208,13 +208,12 @@ class QrData {
 
   @override
   String toString() {
-    return 'QrData{qrType: $qrType, number: $number, url: $url, wifi: $wifi, email: $email, sms: $sms, vcard: $vcard}';
+    return 'QrData{qrType: $qrType, number: $number, url: $url, wifi: $wifi, email: $email, sms: $sms, vcard: $vcard, text: $text}';
   }
 }
 
 class Number {
   String number = "";
-  String name = "Telephone";
 
   Number(String number) {
     this.number = number;
@@ -222,13 +221,12 @@ class Number {
 
   @override
   String toString() {
-    return 'Number{number: $number, name: $name}';
+    return 'Number{number: $number}';
   }
 }
 
 class TextT {
   String text = "";
-  String name = "Text";
 
   TextT(String text) {
     this.text = text;
@@ -236,13 +234,12 @@ class TextT {
 
   @override
   String toString() {
-    return 'Text{text: $text, name: $name}';
+    return 'Text{text: $text}';
   }
 }
 
 class Url {
   String url = "";
-  String name = "Url";
 
   Url(String url) {
     this.url = url;
@@ -250,7 +247,7 @@ class Url {
 
   @override
   String toString() {
-    return 'url{url: $url, name: $name}';
+    return 'url{url: $url}';
   }
 }
 
@@ -258,7 +255,6 @@ class Wifi {
   String ssid = "";
   String type = "";
   String password = "";
-  String name = "Wifi";
 
   Wifi(String ssid, String type, String password) {
     this.ssid = ssid;
@@ -268,7 +264,7 @@ class Wifi {
 
   @override
   String toString() {
-    return 'Wifi{ssid: $ssid, type: $type, password: $password, name: $name}';
+    return 'Wifi{ssid: $ssid, type: $type, password: $password}';
   }
 }
 
@@ -276,7 +272,6 @@ class Email {
   String address = "";
   String subject = "";
   String body = "";
-  String name = "Email";
 
   Email(String address, String subject, String body) {
     this.address = address;
@@ -286,14 +281,13 @@ class Email {
 
   @override
   String toString() {
-    return 'EMAIL{address: $address, subject: $subject, body: $body, name: $name}';
+    return 'EMAIL{address: $address, subject: $subject, body: $body}';
   }
 }
 
 class Sms {
   String to = "";
   String msg = "";
-  String name = "Sms";
 
   Sms(String to, String msg) {
     this.to = to;
@@ -302,7 +296,7 @@ class Sms {
 
   @override
   String toString() {
-    return 'SMS{to: $to, msg: $msg, name: $name}';
+    return 'SMS{to: $to, msg: $msg}';
   }
 }
 
@@ -316,7 +310,6 @@ class VCard {
   String url = "";
   String org = "";
   String note = "";
-  String name = "VCard";
 
   VCard(String n, String fn, String title, String tel, String adr, String email,
       String url, String org, String note) {
@@ -333,6 +326,6 @@ class VCard {
 
   @override
   String toString() {
-    return 'VCard{n: $n, fn: $fn, title: $title, tel: $tel, adr: $adr, email: $email, url: $url, org: $org, note: $note, name: $name}';
+    return 'VCard{n: $n, fn: $fn, title: $title, tel: $tel, adr: $adr, email: $email, url: $url, org: $org, note: $note}';
   }
 }
