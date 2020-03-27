@@ -60,6 +60,8 @@ class QrCodeTextParser {
         to = list[0];
       }
       return QrData(QrType.SMS, sms: Sms(to, msg));
+    } else if (!qrText.contains(";")) {
+      return QrData(QrType.TEXT, text: TextT(qrText));
     } else {
       String n = "";
       String fn = "";
@@ -70,7 +72,7 @@ class QrCodeTextParser {
       String url = "";
       String org = "";
       String note = "";
-      qrText.toLowerCase().split(";").forEach((text) {
+      qrText.replaceAll("MECARD:", "").toLowerCase().split(";").forEach((text) {
         if (text.toLowerCase().contains("n:")) {
           n = text.replaceAll("n:", "");
         }
@@ -112,7 +114,7 @@ class QrCodeTextParser {
         list.add(QrDisplayData("Telephone", qrData.number.number));
         break;
       case QrType.URL:
-        list.add(QrDisplayData("Uel", qrData.url.url));
+        list.add(QrDisplayData("Url", qrData.url.url));
         break;
       case QrType.WIFI:
         if (qrData.wifi.ssid.isNotEmpty)
@@ -156,12 +158,15 @@ class QrCodeTextParser {
         if (qrData.vcard.note.isNotEmpty)
           list.add(QrDisplayData("Note", qrData.vcard.note));
         break;
+      case QrType.TEXT:
+        list.add(QrDisplayData("", qrData.text.text));
+        break;
     }
     return list;
   }
 }
 
-enum QrType { NUMBER, URL, WIFI, EMAIL, SMS, VCARD }
+enum QrType { NUMBER, URL, WIFI, EMAIL, SMS, VCARD, TEXT }
 
 class QrDisplayData {
   String name;
@@ -181,9 +186,16 @@ class QrData {
   Email email;
   Sms sms;
   VCard vcard;
+  TextT text;
 
   QrData(QrType qrType,
-      {Number number, Url url, Wifi wifi, Email email, Sms sms, VCard vcard}) {
+      {Number number,
+      Url url,
+      Wifi wifi,
+      Email email,
+      Sms sms,
+      VCard vcard,
+      TextT text}) {
     this.qrType = qrType;
     this.number = number;
     this.url = url;
@@ -191,6 +203,7 @@ class QrData {
     this.email = email;
     this.sms = sms;
     this.vcard = vcard;
+    this.text = text;
   }
 
   @override
@@ -210,6 +223,20 @@ class Number {
   @override
   String toString() {
     return 'Number{number: $number, name: $name}';
+  }
+}
+
+class TextT {
+  String text = "";
+  String name = "Text";
+
+  TextT(String text) {
+    this.text = text;
+  }
+
+  @override
+  String toString() {
+    return 'Text{text: $text, name: $name}';
   }
 }
 
