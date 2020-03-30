@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 
 class AppUtil {
   static String share =
-      "https://play.google.com/store/apps/details?id=com.example.qr_code_scanner";
+      "https://play.google.com/store/apps/details?id=com.nividata.qrCodeScanner";
 
   static void onShareTap(BuildContext context) {
     Share.text('Share App...', share, 'text/plain');

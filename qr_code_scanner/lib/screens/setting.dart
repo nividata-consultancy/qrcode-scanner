@@ -105,8 +105,8 @@ class _SettingScreenState extends State<SettingScreen> {
                             break;
                           case 2:
                             LaunchReview.launch(
-                                androidAppId: "com.example.qr_code_scanner",
-                                iOSAppId: "com.example.qr_code_scanner");
+                                androidAppId: "com.nividata.qrCodeScanner",
+                                iOSAppId: "com.nividata.qrCodeScanner");
                             break;
                           case 3:
                             launchURL(Uri.encodeFull(mailTo));
