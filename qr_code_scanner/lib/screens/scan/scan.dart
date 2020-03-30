@@ -66,9 +66,3 @@ Widget getWidget(String barcode) {
         );
       });
 }
-/*SelectableText(
-QrCodeTextParser.parser(barcode).toString(),
-toolbarOptions: ToolbarOptions(selectAll: true, copy: true),
-style:
-new TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-)*/

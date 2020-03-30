@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
     ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme:
-          ThemeData(primarySwatch: Colors.blue, backgroundColor: Colors.white),
+      title: 'QR Code     ',
+      theme: ThemeData(
+          primarySwatch: Colors.deepOrange, backgroundColor: Colors.white),
       home: MyQRApp(),
     );
   }
@@ -151,9 +151,13 @@ class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
   Future scan() async {
     try {
       String barcode = await BarcodeScanner.scan();
-      Navigator.push(context, SizeRoute(page: ScanScreen(barcode: barcode,)));
+      Navigator.push(
+          context,
+          SizeRoute(
+              page: ScanScreen(
+            barcode: barcode,
+          )));
     } on PlatformException catch (e) {
-      print(e);
       if (e.code == BarcodeScanner.CameraAccessDenied) {
       } else if (e.code == BarcodeScanner.UserCanceled) {
       } else {}
