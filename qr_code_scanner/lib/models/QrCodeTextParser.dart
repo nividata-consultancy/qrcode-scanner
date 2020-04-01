@@ -1,18 +1,20 @@
 class QrCodeTextParser {
   static QrData parser(String qrText) {
     print(qrText);
-    if (qrText.startsWith("tel:")) {
+    if (qrText.startsWith(RegExp("tel:", caseSensitive: false))) {
       return QrData(QrType.NUMBER,
-          number: Number(qrText.replaceAll(RegExp('tel:'), '')));
-    } else if (qrText.startsWith("https://")) {
+          number: Number(
+              qrText.replaceAll(RegExp('tel:', caseSensitive: false), '')));
+    } else if (qrText.startsWith(RegExp("https://", caseSensitive: false))) {
       return QrData(QrType.URL, url: Url(qrText));
-    } else if (qrText.startsWith("http://")) {
+    } else if (qrText.startsWith(RegExp("http://", caseSensitive: false))) {
       return QrData(QrType.URL, url: Url(qrText));
-    } else if (qrText.startsWith("URLTO:")) {
+    } else if (qrText.startsWith(RegExp("URLTO:", caseSensitive: false))) {
       return QrData(QrType.URL,
-          url: Url(qrText.replaceAll(RegExp('URLTO:'), '')));
-    } else if (qrText.startsWith("WIFI:")) {
-      String x = qrText.replaceFirst(RegExp("WIFI:"), "");
+          url: Url(
+              qrText.replaceAll(RegExp('URLTO:', caseSensitive: false), '')));
+    } else if (qrText.startsWith(RegExp("WIFI:", caseSensitive: false))) {
+      String x = qrText.replaceFirst(RegExp("WIFI:", caseSensitive: false), "");
       String S = "";
       String T = "";
       String P = "";
@@ -29,12 +31,16 @@ class QrCodeTextParser {
         }
       });
       return QrData(QrType.WIFI, wifi: Wifi(S, T, P));
-    } else if (qrText.startsWith("mailto:")) {
+    } else if (qrText.startsWith(RegExp("mailto:", caseSensitive: false))) {
       if (!qrText.contains("?")) {
         return QrData(QrType.EMAIL,
-            email: Email(qrText.replaceAll("mailto:", ""), "", ""));
+            email: Email(
+                qrText.replaceAll(RegExp("mailto:", caseSensitive: false), ""),
+                "",
+                ""));
       } else {
-        String x = qrText.replaceFirst(RegExp("mailto:"), "");
+        String x =
+            qrText.replaceFirst(RegExp("mailto:", caseSensitive: false), "");
         String address = x.substring(0, x.indexOf("?"));
         String subject = "";
         String body = "";
@@ -48,8 +54,8 @@ class QrCodeTextParser {
         });
         return QrData(QrType.EMAIL, email: Email(address, subject, body));
       }
-    } else if (qrText.toLowerCase().startsWith("smsto:")) {
-      String x = qrText.toLowerCase().replaceFirst(RegExp("smsto:"), "");
+    } else if (qrText.startsWith(RegExp("smsto:", caseSensitive: false))) {
+      String x = qrText.replaceFirst(RegExp("smsto:", caseSensitive: false), "");
       String to = "";
       String msg = "";
       List<String> list = x.split(":");
@@ -72,33 +78,36 @@ class QrCodeTextParser {
       String url = "";
       String org = "";
       String note = "";
-      qrText.replaceAll("MECARD:", "").toLowerCase().split(";").forEach((text) {
-        if (text.toLowerCase().contains("n:")) {
-          n = text.replaceAll("n:", "");
+      qrText
+          .replaceAll(RegExp("MECARD:", caseSensitive: false), "")
+          .split(";")
+          .forEach((text) {
+        if (text.contains(RegExp("n:", caseSensitive: false))) {
+          n = text.replaceAll(RegExp("n:", caseSensitive: false), "");
         }
-        if (text.toLowerCase().contains("fn:")) {
-          fn = text.replaceAll("fn:", "");
+        if (text.contains(RegExp("fn:", caseSensitive: false))) {
+          fn = text.replaceAll(RegExp("fn:", caseSensitive: false), "");
         }
-        if (text.toLowerCase().contains("title:")) {
-          title = text.replaceAll("title:", "");
+        if (text.contains(RegExp("title:", caseSensitive: false))) {
+          title = text.replaceAll(RegExp("title:", caseSensitive: false), "");
         }
-        if (text.toLowerCase().contains("tel:")) {
-          tel = text.replaceAll("tel:", "");
+        if (text.contains(RegExp("tel:", caseSensitive: false))) {
+          tel = text.replaceAll(RegExp("tel:", caseSensitive: false), "");
         }
-        if (text.toLowerCase().contains("adr:")) {
-          adr = text.replaceAll("adr:", "");
+        if (text.contains(RegExp("adr:", caseSensitive: false))) {
+          adr = text.replaceAll(RegExp("adr:", caseSensitive: false), "");
         }
-        if (text.toLowerCase().contains("email:")) {
-          email = text.replaceAll("email:", "");
+        if (text.contains(RegExp("email:", caseSensitive: false))) {
+          email = text.replaceAll(RegExp("email:", caseSensitive: false), "");
         }
-        if (text.toLowerCase().contains("url:")) {
-          url = text.replaceAll("url:", "");
+        if (text.contains(RegExp("url:", caseSensitive: false))) {
+          url = text.replaceAll(RegExp("url:", caseSensitive: false), "");
         }
-        if (text.toLowerCase().contains("org:")) {
-          org = text.replaceAll("org:", "");
+        if (text.contains(RegExp("org:", caseSensitive: false))) {
+          org = text.replaceAll(RegExp("org:", caseSensitive: false), "");
         }
-        if (text.toLowerCase().contains("note:")) {
-          note = text.replaceAll("note:", "");
+        if (text.contains(RegExp("note:", caseSensitive: false))) {
+          note = text.replaceAll(RegExp("note:", caseSensitive: false), "");
         }
       });
       return QrData(QrType.VCARD,
