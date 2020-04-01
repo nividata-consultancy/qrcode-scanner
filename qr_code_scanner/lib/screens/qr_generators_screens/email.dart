@@ -116,7 +116,7 @@ class _EmailScreenState extends State<EmailScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  height: 100.0,
+                  height: 200.0,
                   child: TextFormField(
                     expands: true,
                     textDirection: TextDirection.ltr,
