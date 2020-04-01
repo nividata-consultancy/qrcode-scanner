@@ -69,8 +69,8 @@ class _EmailScreenState extends State<EmailScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
-                  maxLines: 1,
-                  maxLength: 25,
+                  maxLines: 3 ,
+                  maxLength: 254,
                   controller: txtEmailController,
                   decoration: InputDecoration(
                     hintText: Strings.lbl_email_hint,
