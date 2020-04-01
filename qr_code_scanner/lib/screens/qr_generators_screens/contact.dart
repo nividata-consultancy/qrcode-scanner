@@ -60,7 +60,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
-      bottom: false,
+      bottom: true,
       child: new Form(
         key: _formKey,
         autovalidate: false,
@@ -150,8 +150,8 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 keyboardType: TextInputType.emailAddress,
-                maxLines: 1,
-                maxLength: 25,
+                maxLines: 3,
+                maxLength: 254,
                 controller: txtEmailController,
                 decoration: InputDecoration(
                   hintText: Strings.lbl_email_hint,
@@ -177,7 +177,6 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
               child: TextFormField(
                 keyboardType: TextInputType.url,
                 maxLines: 1,
-                maxLength: 150,
                 controller: txtWebSiteController,
                 decoration: InputDecoration(
                   hintText: Strings.lbl_web_url_hint,

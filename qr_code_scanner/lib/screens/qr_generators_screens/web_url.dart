@@ -65,7 +65,6 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
             TextFormField(
               keyboardType: TextInputType.url,
               maxLines: 1,
-              maxLength: 150,
               controller: textEditingController,
               decoration: InputDecoration(
                 hintText: Strings.lbl_web_url_hint,

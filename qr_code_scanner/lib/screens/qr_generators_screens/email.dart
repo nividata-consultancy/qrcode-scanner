@@ -57,7 +57,7 @@ class _EmailScreenState extends State<EmailScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
-      bottom: false,
+      bottom: true,
       child: new Form(
           key: _formKey,
           autovalidate: false,
