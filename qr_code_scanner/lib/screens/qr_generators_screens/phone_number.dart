@@ -17,8 +17,8 @@ class _PhoneNumberQRState extends State<PhoneNumberQR> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white10,
-        elevation: 0.0,
+        backgroundColor: Colors.white,
+        elevation: 1.0,
         iconTheme: IconThemeData(color: Colors.black),
         title: Row(
           children: <Widget>[
