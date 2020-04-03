@@ -4,8 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:qr_code_scanner/animations/size_transition.dart';
+import 'package:qr_code_scanner/screens/CustomShapeBorder.dart';
 import 'package:qr_code_scanner/screens/about.dart';
-import 'package:qr_code_scanner/screens/qr_generators_screens/contact.dart';
 import 'package:qr_code_scanner/util/app_util.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,7 +14,6 @@ import '../constants.dart';
 class Setting extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _SettingState();
   }
 }
@@ -22,36 +21,33 @@ class Setting extends StatefulWidget {
 class _SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        extendBody: true,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          title: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                FontAwesomeIcons.qrcode,
-                color: Colors.deepOrange,
-              ),
-              Text(" QR code",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24.0,
-                      fontFamily: 'Righteous',
-                      fontWeight: FontWeight.bold)),
-            ],
-          ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        shape: CustomShapeBorder(),
+        backgroundColor: Colors.deepOrange,
+        elevation: 1,
+        title: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              FontAwesomeIcons.qrcode,
+              color: Colors.white,
+            ),
+            Text(" QR code",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24.0,
+                    fontFamily: 'Righteous',
+                    fontWeight: FontWeight.bold)),
+          ],
         ),
-        body: SafeArea(
-          bottom: true,
-          top: false,
-          child: SettingScreen(),
-        ),
+      ),
+      body: SafeArea(
+        bottom: true,
+        top: false,
+        child: SettingScreen(),
       ),
     );
   }
@@ -60,7 +56,6 @@ class _SettingState extends State<Setting> {
 class SettingScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _SettingScreenState();
   }
 }
@@ -75,11 +70,10 @@ class _SettingScreenState extends State<SettingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Stack(
       children: <Widget>[
         ListView.builder(
-            padding: EdgeInsets.fromLTRB(8.0, 15, 8.0, 0),
+            padding: EdgeInsets.fromLTRB(8.0, 120, 8.0, 0),
             itemCount: _children.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
