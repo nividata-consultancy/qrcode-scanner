@@ -2,17 +2,26 @@ class QrCodeTextParser {
   static QrData parser(String qrText) {
     print(qrText);
     if (qrText.startsWith(RegExp("tel:", caseSensitive: false))) {
-      return QrData(QrType.NUMBER,
-          number: Number(
-              qrText.replaceAll(RegExp('tel:', caseSensitive: false), '')));
+      return QrData(
+        qrType: QrType.NUMBER,
+        number:
+            Number(qrText.replaceAll(RegExp('tel:', caseSensitive: false), '')),
+      );
     } else if (qrText.startsWith(RegExp("https://", caseSensitive: false))) {
-      return QrData(QrType.URL, url: Url(qrText));
+      return QrData(
+        qrType: QrType.URL,
+        url: Url(qrText),
+      );
     } else if (qrText.startsWith(RegExp("http://", caseSensitive: false))) {
-      return QrData(QrType.URL, url: Url(qrText));
+      return QrData(
+        qrType: QrType.URL,
+        url: Url(qrText),
+      );
     } else if (qrText.startsWith(RegExp("URLTO:", caseSensitive: false))) {
-      return QrData(QrType.URL,
-          url: Url(
-              qrText.replaceAll(RegExp('URLTO:', caseSensitive: false), '')));
+      return QrData(
+        qrType: QrType.URL,
+        url: Url(qrText.replaceAll(RegExp('URLTO:', caseSensitive: false), '')),
+      );
     } else if (qrText.startsWith(RegExp("WIFI:", caseSensitive: false))) {
       String x = qrText.replaceFirst(RegExp("WIFI:", caseSensitive: false), "");
       String S = "";
@@ -30,14 +39,19 @@ class QrCodeTextParser {
           P = text.replaceAll("P:", "");
         }
       });
-      return QrData(QrType.WIFI, wifi: Wifi(S, T, P));
+      return QrData(
+        qrType: QrType.WIFI,
+        wifi: Wifi(S, T, P),
+      );
     } else if (qrText.startsWith(RegExp("mailto:", caseSensitive: false))) {
       if (!qrText.contains("?")) {
-        return QrData(QrType.EMAIL,
-            email: Email(
-                qrText.replaceAll(RegExp("mailto:", caseSensitive: false), ""),
-                "",
-                ""));
+        return QrData(
+          qrType: QrType.EMAIL,
+          email: Email(
+              qrText.replaceAll(RegExp("mailto:", caseSensitive: false), ""),
+              "",
+              ""),
+        );
       } else {
         String x =
             qrText.replaceFirst(RegExp("mailto:", caseSensitive: false), "");
@@ -52,10 +66,14 @@ class QrCodeTextParser {
             body = text.replaceAll("body=", "");
           }
         });
-        return QrData(QrType.EMAIL, email: Email(address, subject, body));
+        return QrData(
+          qrType: QrType.EMAIL,
+          email: Email(address, subject, body),
+        );
       }
     } else if (qrText.startsWith(RegExp("smsto:", caseSensitive: false))) {
-      String x = qrText.replaceFirst(RegExp("smsto:", caseSensitive: false), "");
+      String x =
+          qrText.replaceFirst(RegExp("smsto:", caseSensitive: false), "");
       String to = "";
       String msg = "";
       List<String> list = x.split(":");
@@ -65,9 +83,15 @@ class QrCodeTextParser {
       } else if (list.length == 0) {
         to = list[0];
       }
-      return QrData(QrType.SMS, sms: Sms(to, msg));
+      return QrData(
+        qrType: QrType.SMS,
+        sms: Sms(to, msg),
+      );
     } else if (!qrText.contains(";")) {
-      return QrData(QrType.TEXT, text: TextT(qrText));
+      return QrData(
+        qrType: QrType.TEXT,
+        text: TextT(qrText),
+      );
     } else {
       String n = "";
       String fn = "";
@@ -110,65 +134,71 @@ class QrCodeTextParser {
           note = text.replaceAll(RegExp("note:", caseSensitive: false), "");
         }
       });
-      return QrData(QrType.VCARD,
-          vcard: VCard(n, fn, title, tel, adr, email, url, org, note));
+      return QrData(
+        qrType: QrType.VCARD,
+        vcard: VCard(n, fn, title, tel, adr, email, url, org, note),
+      );
     }
   }
 
   static List<QrDisplayData> getDisplayData(String qrText) {
     QrData qrData = parser(qrText);
-    List<QrDisplayData> list = List<QrDisplayData>();
+    List<QrDisplayData> list = List<QrDisplayData>.empty(growable: true);
     switch (qrData.qrType) {
       case QrType.NUMBER:
-        list.add(QrDisplayData("Telephone", qrData.number.number));
+        list.add(
+            QrDisplayData(name: "Telephone", value: qrData.number!.number));
         break;
       case QrType.URL:
-        list.add(QrDisplayData("Url", qrData.url.url));
+        list.add(QrDisplayData(name: "Url", value: qrData.url!.url));
         break;
       case QrType.WIFI:
-        if (qrData.wifi.ssid.isNotEmpty)
-          list.add(QrDisplayData("SSID", qrData.wifi.ssid));
-        if (qrData.wifi.type.isNotEmpty)
-          list.add(QrDisplayData("Type", qrData.wifi.type));
-        if (qrData.wifi.password.isNotEmpty)
-          list.add(QrDisplayData("Password", qrData.wifi.password));
+        if (qrData.wifi!.ssid.isNotEmpty)
+          list.add(QrDisplayData(name: "SSID", value: qrData.wifi!.ssid));
+        if (qrData.wifi!.type.isNotEmpty)
+          list.add(QrDisplayData(name: "Type", value: qrData.wifi!.type));
+        if (qrData.wifi!.password.isNotEmpty)
+          list.add(
+              QrDisplayData(name: "Password", value: qrData.wifi!.password));
         break;
       case QrType.EMAIL:
-        if (qrData.email.address.isNotEmpty)
-          list.add(QrDisplayData("Email", qrData.email.address));
-        if (qrData.email.subject.isNotEmpty)
-          list.add(QrDisplayData("Subject", qrData.email.subject));
-        if (qrData.email.body.isNotEmpty)
-          list.add(QrDisplayData("Body", qrData.email.body));
+        if (qrData.email!.address.isNotEmpty)
+          list.add(QrDisplayData(name: "Email", value: qrData.email!.address));
+        if (qrData.email!.subject.isNotEmpty)
+          list.add(
+              QrDisplayData(name: "Subject", value: qrData.email!.subject));
+        if (qrData.email!.body.isNotEmpty)
+          list.add(QrDisplayData(name: "Body", value: qrData.email!.body));
         break;
       case QrType.SMS:
-        if (qrData.sms.to.isNotEmpty)
-          list.add(QrDisplayData("Telephone", qrData.sms.to));
-        if (qrData.sms.msg.isNotEmpty)
-          list.add(QrDisplayData("Message", qrData.sms.msg));
+        if (qrData.sms!.to.isNotEmpty)
+          list.add(QrDisplayData(name: "Telephone", value: qrData.sms!.to));
+        if (qrData.sms!.msg.isNotEmpty)
+          list.add(QrDisplayData(name: "Message", value: qrData.sms!.msg));
         break;
       case QrType.VCARD:
-        if (qrData.vcard.n.isNotEmpty)
-          list.add(QrDisplayData("Name", qrData.vcard.n));
-        if (qrData.vcard.fn.isNotEmpty)
-          list.add(QrDisplayData("Full Name", qrData.vcard.fn));
-        if (qrData.vcard.title.isNotEmpty)
-          list.add(QrDisplayData("Title", qrData.vcard.title));
-        if (qrData.vcard.tel.isNotEmpty)
-          list.add(QrDisplayData("Telephone", qrData.vcard.tel));
-        if (qrData.vcard.adr.isNotEmpty)
-          list.add(QrDisplayData("Address", qrData.vcard.adr));
-        if (qrData.vcard.email.isNotEmpty)
-          list.add(QrDisplayData("Email", qrData.vcard.email));
-        if (qrData.vcard.url.isNotEmpty)
-          list.add(QrDisplayData("Url", qrData.vcard.url));
-        if (qrData.vcard.org.isNotEmpty)
-          list.add(QrDisplayData("Organization", qrData.vcard.org));
-        if (qrData.vcard.note.isNotEmpty)
-          list.add(QrDisplayData("Note", qrData.vcard.note));
+        if (qrData.vcard!.n.isNotEmpty)
+          list.add(QrDisplayData(name: "Name", value: qrData.vcard!.n));
+        if (qrData.vcard!.fn.isNotEmpty)
+          list.add(QrDisplayData(name: "Full Name", value: qrData.vcard!.fn));
+        if (qrData.vcard!.title.isNotEmpty)
+          list.add(QrDisplayData(name: "Title", value: qrData.vcard!.title));
+        if (qrData.vcard!.tel.isNotEmpty)
+          list.add(QrDisplayData(name: "Telephone", value: qrData.vcard!.tel));
+        if (qrData.vcard!.adr.isNotEmpty)
+          list.add(QrDisplayData(name: "Address", value: qrData.vcard!.adr));
+        if (qrData.vcard!.email.isNotEmpty)
+          list.add(QrDisplayData(name: "Email", value: qrData.vcard!.email));
+        if (qrData.vcard!.url.isNotEmpty)
+          list.add(QrDisplayData(name: "Url", value: qrData.vcard!.url));
+        if (qrData.vcard!.org.isNotEmpty)
+          list.add(
+              QrDisplayData(name: "Organization", value: qrData.vcard!.org));
+        if (qrData.vcard!.note.isNotEmpty)
+          list.add(QrDisplayData(name: "Note", value: qrData.vcard!.note));
         break;
       case QrType.TEXT:
-        list.add(QrDisplayData("", qrData.text.text));
+        list.add(QrDisplayData(name: "", value: qrData.text!.text));
         break;
     }
     return list;
@@ -178,42 +208,35 @@ class QrCodeTextParser {
 enum QrType { NUMBER, URL, WIFI, EMAIL, SMS, VCARD, TEXT }
 
 class QrDisplayData {
-  String name;
-  String value;
+  final String name;
+  final String value;
 
-  QrDisplayData(String name, String value) {
-    this.name = name;
-    this.value = value;
-  }
+  QrDisplayData({
+    required this.name,
+    required this.value,
+  });
 }
 
 class QrData {
-  QrType qrType;
-  Number number;
-  Url url;
-  Wifi wifi;
-  Email email;
-  Sms sms;
-  VCard vcard;
-  TextT text;
+  final QrType qrType;
+  final Number? number;
+  final Url? url;
+  final Wifi? wifi;
+  final Email? email;
+  final Sms? sms;
+  final VCard? vcard;
+  final TextT? text;
 
-  QrData(QrType qrType,
-      {Number number,
-      Url url,
-      Wifi wifi,
-      Email email,
-      Sms sms,
-      VCard vcard,
-      TextT text}) {
-    this.qrType = qrType;
-    this.number = number;
-    this.url = url;
-    this.wifi = wifi;
-    this.email = email;
-    this.sms = sms;
-    this.vcard = vcard;
-    this.text = text;
-  }
+  QrData({
+    required this.qrType,
+    this.number,
+    this.url,
+    this.wifi,
+    this.email,
+    this.sms,
+    this.vcard,
+    this.text,
+  });
 
   @override
   String toString() {

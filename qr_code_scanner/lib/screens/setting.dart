@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,7 +6,7 @@ import 'package:qr_code_scanner/animations/size_transition.dart';
 import 'package:qr_code_scanner/screens/CustomShapeBorder.dart';
 import 'package:qr_code_scanner/screens/about.dart';
 import 'package:qr_code_scanner/util/app_util.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../constants.dart';
 
@@ -135,14 +134,14 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
     } else {
       Fluttertoast.showToast(
           msg: "No any email app is available.",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
+          timeInSecForIosWeb: 1,
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 14.0);

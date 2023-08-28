@@ -1,8 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qr_code_scanner/res/strings.dart';
 import 'package:qr_code_scanner/screens/qr_generators_screens/qrShareDialog.dart';
@@ -49,7 +45,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
   final txtToController = TextEditingController();
   final txtMessageController = TextEditingController();
   String _dataString = "Hello from this QR";
-  String _inputErrorText;
+  String? _inputErrorText;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +54,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
       bottom: true,
       child: new Form(
           key: _formKey,
-          autovalidate: false,
+          autovalidateMode: AutovalidateMode.disabled,
           child: new ListView(
             padding: const EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 16.0),
             shrinkWrap: true,
@@ -77,7 +73,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
-                    if (value.trim().isEmpty)
+                    if (value == null || value.trim().isEmpty)
                       return 'Receiver number is required';
                     else
                       return null;
@@ -102,7 +98,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                       errorText: _inputErrorText,
                     ),
                     validator: (value) {
-                      if (value.trim().isEmpty)
+                      if (value == null || value.trim().isEmpty)
                         return 'Message text is required';
                       else
                         return null;
@@ -117,7 +113,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.0)),
                   onPressed: () {
-                    if (_formKey.currentState.validate()) {
+                    if (_formKey.currentState!.validate()) {
                       _dataString =
                           ("SMSTO: ${txtToController.text.trim()}: ${txtMessageController.text.trim()}");
                       _inputErrorText = null;

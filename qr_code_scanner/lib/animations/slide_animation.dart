@@ -4,8 +4,10 @@ class EnterExitRoute extends PageRouteBuilder {
   final Widget enterPage;
   final Widget exitPage;
 
-  EnterExitRoute({this.exitPage, this.enterPage})
-      : super(
+  EnterExitRoute({
+    required this.exitPage,
+    required this.enterPage,
+  }) : super(
           pageBuilder: (
             BuildContext context,
             Animation<double> animation,

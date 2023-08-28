@@ -4,9 +4,12 @@ import 'package:qr_code_scanner/models/QrCodeTextParser.dart';
 import 'package:qr_code_scanner/res/strings.dart';
 
 class ScanScreen extends StatelessWidget {
-  String barcode = "";
+  final String barcode;
 
-  ScanScreen({Key key, @required this.barcode}) : super(key: key);
+  ScanScreen({
+    Key? key,
+    required this.barcode,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -16,8 +16,6 @@ class QRCodeGenerator extends StatefulWidget {
 }
 
 class _QRCodeGeneratorState extends State<QRCodeGenerator> {
-  String _inputErrorText;
-  final TextEditingController _textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

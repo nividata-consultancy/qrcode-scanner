@@ -1,8 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qr_code_scanner/res/strings.dart';
 import 'package:qr_code_scanner/screens/qr_generators_screens/qrShareDialog.dart';
@@ -51,7 +47,7 @@ class _WifiScreenState extends State<WifiScreen> {
   final txtPASSWORDContentController = TextEditingController();
 
   String _dataString = "Hello from this QR";
-  String _inputErrorText;
+  String? _inputErrorText;
   String dropdownValue = 'None';
 
   @override
@@ -61,7 +57,7 @@ class _WifiScreenState extends State<WifiScreen> {
       bottom: false,
       child: new Form(
           key: _formKey,
-          autovalidate: false,
+          autovalidateMode: AutovalidateMode.disabled,
           child: new ListView(
             padding: const EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 16.0),
             shrinkWrap: true,
@@ -93,9 +89,9 @@ class _WifiScreenState extends State<WifiScreen> {
                       height: 0.0,
                       color: Colors.deepPurpleAccent,
                     ),
-                    onChanged: (String newValue) {
+                    onChanged: (newValue) {
                       setState(() {
-                        dropdownValue = newValue;
+                        dropdownValue = newValue!;
                       });
                     },
                     items: <String>['None', 'WEP', 'WPA/WPA2']
@@ -122,7 +118,7 @@ class _WifiScreenState extends State<WifiScreen> {
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
-                    if (value.trim().isEmpty)
+                    if (value == null || value.trim().isEmpty)
                       return 'SSID is required';
                     else
                       return null;
@@ -143,7 +139,8 @@ class _WifiScreenState extends State<WifiScreen> {
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
-                    if (dropdownValue != 'None' && value.trim().isEmpty)
+                    if (dropdownValue != 'None' &&
+                        (value == null || value.trim().isEmpty))
                       return 'Password is required';
                     else
                       return null;
@@ -157,7 +154,7 @@ class _WifiScreenState extends State<WifiScreen> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.0)),
                   onPressed: () {
-                    if (_formKey.currentState.validate()) {
+                    if (_formKey.currentState!.validate()) {
                       _dataString =
                           ("WIFI:T:$dropdownValue;S:${txtSSIDController.text.trim()};P:${txtPASSWORDContentController.text.trim()};;");
                       _inputErrorText = null;

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 class CustomShapeBorder extends ContinuousRectangleBorder {
   @override
-  Path getOuterPath(Rect rect, {TextDirection textDirection}) {
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
     final double innerCircleRadius = 120.0;
-    final double baseHeight = 15;
 
     Path path = Path();
     path.lineTo(0, rect.height);
@@ -29,15 +28,3 @@ class CustomShapeBorder extends ContinuousRectangleBorder {
     return path;
   }
 }
-//
-//path.quadraticBezierTo(rect.width / 2 - (innerCircleRadius / 2) - 30,
-//rect.height + 15, rect.width / 2 - 75, rect.height + 50);
-//path.cubicTo(
-//rect.width / 2 - 40,
-//rect.height + innerCircleRadius - 40,
-//rect.width / 2 + 40,
-//rect.height + innerCircleRadius - 40,
-//rect.width / 2 + 75,
-//rect.height + 50);
-//path.quadraticBezierTo(rect.width / 2 + (innerCircleRadius / 2) + 30,
-//rect.height + 15, rect.width, rect.height);

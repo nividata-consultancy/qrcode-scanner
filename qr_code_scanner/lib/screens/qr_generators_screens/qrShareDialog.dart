@@ -22,7 +22,7 @@ class QrShareDialog {
                       padding: const EdgeInsets.all(16.0),
                       child: RepaintBoundary(
                         key: globalKey,
-                        child: QrImage(
+                        child: QrImageView(
                           backgroundColor: Colors.white,
                           version: QrVersions.auto,
                           gapless: false,

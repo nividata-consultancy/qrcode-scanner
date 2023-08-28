@@ -1,8 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:qr_code_scanner/res/strings.dart';
 import 'package:qr_code_scanner/screens/qr_generators_screens/qrShareDialog.dart';
@@ -51,7 +47,7 @@ class _EmailScreenState extends State<EmailScreen> {
   final txtBodyController = TextEditingController();
 
   String _dataString = "Hello from this QR";
-  String _inputErrorText;
+  String? _inputErrorText;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +56,7 @@ class _EmailScreenState extends State<EmailScreen> {
       bottom: true,
       child: new Form(
           key: _formKey,
-          autovalidate: false,
+          autovalidateMode: AutovalidateMode.disabled,
           child: new ListView(
             padding: const EdgeInsets.fromLTRB(20.0, 16.0, 20.0, 16.0),
             shrinkWrap: true,
@@ -69,7 +65,7 @@ class _EmailScreenState extends State<EmailScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
-                  maxLines: 3 ,
+                  maxLines: 3,
                   maxLength: 254,
                   controller: txtEmailController,
                   decoration: InputDecoration(
@@ -79,7 +75,7 @@ class _EmailScreenState extends State<EmailScreen> {
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
-                    if (value.trim().isEmpty)
+                    if (value == null || value.trim().isEmpty)
                       return 'Email is required';
                     else {
                       if (RegExp(
@@ -105,7 +101,7 @@ class _EmailScreenState extends State<EmailScreen> {
                     errorText: _inputErrorText,
                   ),
                   validator: (value) {
-                    if (value.trim().isEmpty)
+                    if (value == null || value.trim().isEmpty)
                       return 'Mail subject is required';
                     else
                       return null;
@@ -130,7 +126,7 @@ class _EmailScreenState extends State<EmailScreen> {
                       errorText: _inputErrorText,
                     ),
                     validator: (value) {
-                      if (value.trim().isEmpty)
+                      if (value == null || value.trim().isEmpty)
                         return 'Mail body is required';
                       else
                         return null;
@@ -145,7 +141,7 @@ class _EmailScreenState extends State<EmailScreen> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6.0)),
                   onPressed: () {
-                    if (_formKey.currentState.validate()) {
+                    if (_formKey.currentState!.validate()) {
                       _dataString =
                           ("mailto:${txtEmailController.text.trim()}?subject=${txtSubjectController.text.trim()}&body=${txtBodyController.text.trim()}");
                       _inputErrorText = null;

@@ -1,13 +1,12 @@
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/screens/landing_screen.dart';
 import 'package:qr_code_scanner/screens/scan/scan.dart';
 import 'package:qr_code_scanner/screens/setting.dart';
-import 'package:simple_permissions/simple_permissions.dart';
 
 import 'animations/animate_button.dart';
 import 'animations/size_transition.dart';
@@ -40,7 +39,7 @@ class MyQRApp extends StatefulWidget {
 }
 
 class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   initState() {
@@ -150,38 +149,37 @@ class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
 
   Future scan() async {
     try {
-      String barcode = await BarcodeScanner.scan();
+      ScanResult barcode = await BarcodeScanner.scan();
       Navigator.push(
-          context,
-          SizeRoute(
-              page: ScanScreen(
-            barcode: barcode,
-          )));
-    } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
-      } else if (e.code == BarcodeScanner.UserCanceled) {
-      } else {}
-    } on FormatException {} catch (e) {}
+        context,
+        SizeRoute(
+          page: ScanScreen(
+            barcode: barcode.rawContent,
+          ),
+        ),
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   Future handleCameraPermission() async {
-    SimplePermissions.getPermissionStatus(Permission.Camera).then((permission) {
-      if (permission == PermissionStatus.authorized) {
+    PermissionStatus status = await Permission.camera.status;
+
+    if (status.isGranted) {
+      scan();
+    } else if (status.isDenied || status.isRestricted) {
+      PermissionStatus newStatus = await Permission.camera.request();
+      if (newStatus.isGranted) {
         scan();
-      } else if (permission == PermissionStatus.denied) {
-        SimplePermissions.requestPermission(Permission.Camera)
-            .then((permission) {
-          if (permission == PermissionStatus.authorized) {
-            scan();
-          } else if (permission == PermissionStatus.denied) {
-          } else if (permission == PermissionStatus.deniedNeverAsk) {
-            SimplePermissions.openSettings();
-          }
-        });
-      } else if (permission == PermissionStatus.deniedNeverAsk) {
-        SimplePermissions.openSettings();
+      } else if (newStatus.isPermanentlyDenied) {
+        // Open the App settings
+        openAppSettings();
       }
-    });
+    } else if (status.isPermanentlyDenied) {
+      // If the permission has been denied forever, then direct the user to settings
+      openAppSettings();
+    }
   }
 }
 
