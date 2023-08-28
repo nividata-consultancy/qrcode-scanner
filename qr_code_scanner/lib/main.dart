@@ -25,7 +25,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'QR Code     ',
       theme: ThemeData(
-          primarySwatch: Colors.deepOrange, backgroundColor: Colors.white),
+        primarySwatch: Colors.deepOrange,
+        backgroundColor: Colors.white,
+      ),
       home: MyQRApp(),
     );
   }
@@ -150,14 +152,16 @@ class _MyQRAppState extends State<MyQRApp> with SingleTickerProviderStateMixin {
   Future scan() async {
     try {
       ScanResult barcode = await BarcodeScanner.scan();
-      Navigator.push(
-        context,
-        SizeRoute(
-          page: ScanScreen(
-            barcode: barcode.rawContent,
+      if (barcode.type == ResultType.Barcode) {
+        Navigator.push(
+          context,
+          SizeRoute(
+            page: ScanScreen(
+              barcode: barcode.rawContent,
+            ),
           ),
-        ),
-      );
+        );
+      }
     } catch (e) {
       debugPrint(e.toString());
     }
